@@ -3,6 +3,7 @@ import './App.css'
 import { useWeb3 } from './Web3Provider';
 import { ContadorService } from './services/ContadorService';
 import { TorneoService } from './services/TorneoService';
+import { PadelDBService } from './services/PadelDBService';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -429,6 +430,7 @@ const getValue = () => {
   const contract = new web3.eth.Contract(contractAbi, contractAddress);
   const contadorService = new ContadorService(contract);
   const torneoService = new TorneoService(contractTorneo);
+  const padelDBService = new PadelDBService();
 
   if (!web3) {
     console.log("No web3")
@@ -443,6 +445,12 @@ const getValue = () => {
 
   torneoService.getPartidas().then(result => {
     console.log(result);
+  });
+
+  padelDBService.obtenerRegistros().then(data => {
+    console.log(data);
+  }).catch(error => {
+    console.error('Error al obtener los registros:', error);
   });
 };
 
