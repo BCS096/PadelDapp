@@ -10,7 +10,7 @@ function App() {
   const {initializeWeb3, web3, account} = useWeb3();
 
 const getValue = () => {
-  const contractAddress = "0x1A90175B75Fcae4852c95B8E95803c298e25dd06";
+  const contractAddress = "0xF0A3EBD62ee087B07220358E4194b3e4F2Af59D5";
   const contractAbi = [
     {
       inputs: [],
@@ -52,7 +52,7 @@ const getValue = () => {
     },
   ];
 
-  const contratoTorneoAddress = '0xe9361536FE298fF73C76C246F6863a3Ef4468D93';
+  const contratoTorneoAddress = '0x1F243B3B7E6c0e02B2d51700b2Aa2FDfcf079138';
 
   const contratoTorneoABI = [
     {
