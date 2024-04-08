@@ -41,7 +41,7 @@ app.get('/api/data', (req, res) => {
 //añadir torneo
 app.post('/api/torneo', (req, res) => {
     const { address, owner} = req.body;
-    connection.query('INSERT INTO torneo (address, owner, status) VALUES (?, ?, ?)', [address, owner, "open"], (err, result) => {
+    connection.query('INSERT INTO torneo (address, owner, status) VALUES (?, ?, ?)', [address, owner, "OPENED"], (err, result) => {
         if (err) {
             console.error('Error al ejecutar la consulta:', err);
             res.status(500).json({ error: 'Error interno del servidor' });
@@ -67,12 +67,12 @@ app.post('/api/usuario', (req, res) => {
 //update usuario
 app.put('/api/usuario/:address', (req, res) => {
     const address = req.params.address;
-    const { name, email, telefono } = req.body;
+    const { name, email, telefono, genero, edad } = req.body;
     
     let updateFields = {};
 
     if (name) {
-        updateFields.name = name;
+        updateFields.nombre = name;
     }
 
     if (email) {
@@ -81,6 +81,14 @@ app.put('/api/usuario/:address', (req, res) => {
 
     if (telefono) {
         updateFields.telefono = telefono;
+    }
+
+    if (genero) {
+        updateFields.genero = genero;
+    }
+
+    if (edad) {
+        updateFields.edad = edad;
     }
 
     if (Object.keys(updateFields).length === 0) {
@@ -130,7 +138,7 @@ app.post('/api/participacion', (req, res) => {
                         return;
                     }
                     equipoId = result.insertId;
-                    connection.query('INSERT INTO participacion (equipoId, torneoAddress) VALUES (?, ?)', [equipoId, torneo], (err, result) => {
+                    connection.query('INSERT INTO participante (equipoId, addressTorneo) VALUES (?, ?)', [equipoId, torneo], (err, result) => {
                         if (err) {
                             console.error('Error al ejecutar la consulta:', err);
                             connection.rollback(() => {
@@ -152,11 +160,11 @@ app.post('/api/participacion', (req, res) => {
                 });
             } else {
                 equipoId = result[0].id;
-                connection.query('INSERT INTO participacion (equipoId, torneoAddress) VALUES (?, ?)', [equipoId, torneo], (err, result) => {
+                connection.query('INSERT INTO participante (equipoId, addressTorneo) VALUES (?, ?)', [equipoId, torneo], (err, result) => {
                     if (err) {
                         if (err.code == 'ER_DUP_ENTRY') {
                             connection.rollback(() => {
-                                res.status(400).json({ error: 'Equipo ya inscrito' });
+                                res.status(405).json({ error: 'Equipo ya inscrito' });
                             });
                             return;
                         }
@@ -179,6 +187,23 @@ app.post('/api/participacion', (req, res) => {
                 });
             }
         });
+    });
+});
+
+//cancelar participacion
+app.delete('/api/participacion/:id/:addressTorneo', (req, res) => {
+    const id = req.params.id;
+    const addressTorneo = req.params.addressTorneo;
+    connection.query('DELETE FROM participante WHERE equipoId = ? AND addressTorneo = ?', [id, addressTorneo], (err, result) => {
+        if (err) {
+            console.error('Error al ejecutar la consulta:', err);
+            res.status(500).json({ error: 'Error interno del servidor' });
+            return;
+        }
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Participacion no encontrada' });
+        }
+        res.json({ message: 'Participacion cancelada correctamente' });
     });
 });
 
@@ -208,6 +233,75 @@ app.put('/api/torneo/:address/status', (req, res) => {
         }
 
         res.json({ message: 'Torneo actualizado correctamente' });
+    });
+});
+
+//getTorneosByOwner
+app.get('/api/torneo/owner/:owner', (req, res) => {
+    const owner = req.params.owner;
+    connection.query('SELECT * FROM torneo WHERE owner = ?', [owner], (err, results) => {
+        if (err) {
+            console.error('Error al ejecutar la consulta:', err);
+            res.status(500).json({ error: 'Error interno del servidor' });
+            return;
+        }
+        res.json(results);
+    });
+});
+
+//getTorneosByJugador
+app.get('/api/torneo/player/:jugador', (req, res) => {
+    const jugador = req.params.jugador;
+    connection.query('SELECT * FROM torneo WHERE address IN (SELECT addressTorneo FROM participante WHERE equipoId IN (SELECT id FROM equipo WHERE jugador1 = ? OR jugador2 = ?))', [jugador, jugador], (err, results) => {
+        if (err) {
+            console.error('Error al ejecutar la consulta:', err);
+            res.status(500).json({ error: 'Error interno del servidor' });
+            return;
+        }
+        res.json(results);
+    });
+});
+
+//getUsuario
+app.get('/api/usuario/:address', (req, res) => {
+    const address = req.params.address;
+    connection.query('SELECT * FROM usuario WHERE address = ?', [address], (err, results) => {
+        if (err) {
+            console.error('Error al ejecutar la consulta:', err);
+            res.status(500).json({ error: 'Error interno del servidor' });
+            return;
+        }
+        if (results.length === 0) {
+            return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
+        res.json(results[0]);
+    });
+});
+
+//getUsuariosByTorneo
+app.get('/api/usuario/torneo/:address', (req, res) => {
+    const address = req.params.address;
+    // SELECT usuario.*, equipoId FROM usuario JOIN equipo ON usuario.address = equipo.jugador1 OR usuario.address = equipo.jugador2 JOIN participante ON equipo.id = participante.equipoId WHERE participante.addressTorneo = 'torneo';
+    connection.query('SELECT usuario.*, equipoId FROM usuario JOIN equipo ON usuario.address = equipo.jugador1 OR usuario.address = equipo.jugador2 ' +
+     'JOIN participante ON equipo.id = participante.equipoId WHERE participante.addressTorneo = ?', [address], (err, results) => {
+        if (err) {
+            console.error('Error al ejecutar la consulta:', err);
+            res.status(500).json({ error: 'Error interno del servidor' });
+            return;
+        }
+        res.json(results);
+    });
+});
+
+//getTorneosActivos
+app.get('/api/torneo/active', (req, res) => {
+    connection.query('SELECT * FROM torneo WHERE status NOT IN ("CANCELED","FINISHED")', (err, results) => {
+        if (err) {
+            console.error('Error al ejecutar la consulta:', err);
+            res.status(500).json({ error: 'Error interno del servidor' });
+            return;
+        }
+        res.json(results);
     });
 });
 

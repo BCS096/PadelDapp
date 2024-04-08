@@ -9,6 +9,18 @@ export class TorneoService {
         return await this.contratoTorneo.methods.getNombreTorneo().call();
     }
 
+    async getOwner() {
+        return await this.contratoTorneo.methods.getOwner().call();
+    }
+
+    async getFechaInicio() {
+        return await this.contratoTorneo.methods.getFechaInicio().call();
+    }
+
+    async getFechaFin() {
+        return await this.contratoTorneo.methods.getFechaFin().call();
+    }
+
     async cerrarInscripciones(owner) {
         return await this.contratoTorneo.methods.cerrarInscripciones().send({from: owner,  gas: '6721975'});
     }

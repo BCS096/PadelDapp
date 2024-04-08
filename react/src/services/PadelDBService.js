@@ -1,4 +1,3 @@
-// BackendService.js
 import axios from 'axios';
 
 export class PadelDBService {

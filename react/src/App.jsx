@@ -10,7 +10,7 @@ function App() {
   const {initializeWeb3, web3, account} = useWeb3();
 
 const getValue = () => {
-  const contractAddress = "0xF0A3EBD62ee087B07220358E4194b3e4F2Af59D5";
+  const contractAddress = "0x0D55553047792973ac0f9930F66475c11b8ddad4";
   const contractAbi = [
     {
       inputs: [],
@@ -52,7 +52,7 @@ const getValue = () => {
     },
   ];
 
-  const contratoTorneoAddress = '0x1F243B3B7E6c0e02B2d51700b2Aa2FDfcf079138';
+  const contratoTorneoAddress = '0x0802eF52A1b003eb7068c358949C5BFcdf018DC3';
 
   const contratoTorneoABI = [
     {
@@ -65,6 +65,16 @@ const getValue = () => {
         {
           "internalType": "string",
           "name": "_nombreTorneo",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_fechaInicio",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_fechaFin",
           "type": "string"
         }
       ],
@@ -109,6 +119,34 @@ const getValue = () => {
           "internalType": "address",
           "name": "jugador2",
           "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "fechaFin",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "fechaInicio",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
         }
       ],
       "stateMutability": "view",
@@ -208,6 +246,34 @@ const getValue = () => {
           "internalType": "uint256",
           "name": "",
           "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "getFechaInicio",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "getFechaFin",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
         }
       ],
       "stateMutability": "view",
