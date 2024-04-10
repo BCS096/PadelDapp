@@ -4,6 +4,7 @@ import { useWeb3 } from './Web3Provider';
 import { ContadorService } from './services/ContadorService';
 import { TorneoService } from './services/TorneoService';
 import { PadelDBService } from './services/PadelDBService';
+import { Button } from 'antd';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -530,8 +531,8 @@ const getValue = () => {
                 <div className="card-body">
                   <h5 className="card-title">Contador</h5>
                   <div id="numero" className="display-1">{count}</div>
-                  <button onClick={getValue} className="btn btn-primary mt-3">Geddt</button>
-                  <button onClick={initializeWeb3} className="btn btn-primary mt-3 d-none">Metamask</button>
+                  <Button type="primary" onClick={getValue} className="btn btn-primary mt-3">Geddt</Button>
+                  <Button type="default" onClick={initializeWeb3} className="btn btn-primary mt-3 d-none">Metamask</Button>
                   <h1 id="account">{account}</h1>
                 </div>
               </div>
