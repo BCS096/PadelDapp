@@ -191,20 +191,32 @@ app.post('/api/participacion', (req, res) => {
 });
 
 //cancelar participacion
-app.delete('/api/participacion/:id/:addressTorneo', (req, res) => {
-    const id = req.params.id;
+app.delete('/api/participacion/:jugadorAddress/torneo/:addressTorneo', (req, res) => {
+    const jugadorAddress = req.params.jugadorAddress;
     const addressTorneo = req.params.addressTorneo;
-    connection.query('DELETE FROM participante WHERE equipoId = ? AND addressTorneo = ?', [id, addressTorneo], (err, result) => {
+    connection.query('SELECT equipo.id FROM equipo JOIN participante ON jugador1 = ? OR jugador2 = ? WHERE addressTorneo = ?', [jugadorAddress, jugadorAddress, addressTorneo], (err, result) => {
         if (err) {
             console.error('Error al ejecutar la consulta:', err);
             res.status(500).json({ error: 'Error interno del servidor' });
             return;
         }
-        if (result.affectedRows === 0) {
-            return res.status(404).json({ error: 'Participacion no encontrada' });
+        if (result.length === 0) {
+            return res.status(404).json({ error: 'Equipo no encontrado' });
         }
-        res.json({ message: 'Participacion cancelada correctamente' });
+        const equipoId = result[0].id;
+        connection.query('DELETE FROM participante WHERE equipoId = ? AND addressTorneo = ?', [equipoId, addressTorneo], (err, result) => {
+            if (err) {
+                console.error('Error al ejecutar la consulta:', err);
+                res.status(500).json({ error: 'Error interno del servidor' });
+                return;
+            }
+            if (result.affectedRows === 0) {
+                return res.status(404).json({ error: 'Participacion no encontrada' });
+            }
+            res.json({ message: 'Participacion cancelada correctamente' });
+        });
     });
+    
 });
 
 //update torneoStatus
@@ -294,7 +306,7 @@ app.get('/api/usuario/torneo/:address', (req, res) => {
 });
 
 //getTorneosActivos
-app.get('/api/torneo/active', (req, res) => {
+app.get('/api/torneo/activos', (req, res) => {
     connection.query('SELECT * FROM torneo WHERE status NOT IN ("CANCELED","FINISHED")', (err, results) => {
         if (err) {
             console.error('Error al ejecutar la consulta:', err);
