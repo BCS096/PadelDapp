@@ -1,14 +1,41 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import { useWeb3 } from './Web3Provider';
 import { ContadorService } from './services/ContadorService';
 import { TorneoService } from './services/TorneoService';
 import { PadelDBService } from './services/PadelDBService';
-import { Button } from 'antd';
+import { Form, Input, DatePicker, Button } from 'antd';
+import { CreateTorneoService } from './services/CreateTorneoService';
+import moment from 'moment';
+
+const { RangePicker } = DatePicker;
 
 function App() {
   const [count, setCount] = useState(0);
   const {initializeWeb3, web3, account} = useWeb3();
+  const [form] = Form.useForm();
+
+  const [createTorneoService, setCreateTorneoService] = useState(null);
+
+  useEffect(() => {
+    if (web3) {
+      setCreateTorneoService(new CreateTorneoService(web3));
+    }
+  }, [web3]);
+
+  const onFinish = (values) => {
+    console.log('Form values:', values);
+    const fechasString = values.fechas.map(date => moment(date).format('DD/MM/YY'));
+    console.log(web3);
+    console.log(createTorneoService);
+    if(web3 && createTorneoService) {
+      createTorneoService.createTorneo(values.nombreTorneo, fechasString[0], fechasString[1], account).then((direccion) => {
+        console.log('Torneo creado en la direccion: ' + direccion);
+      }).catch(error => {
+        console.error('Error al crear el torneo:', error);
+      });
+    }
+  };
 
 const getValue = () => {
   const contractAddress = "0x0D55553047792973ac0f9930F66475c11b8ddad4";
@@ -538,6 +565,25 @@ const getValue = () => {
               </div>
             </div>
           </div>
+          <Form form={form} onFinish={onFinish} layout="vertical">
+            <Form.Item
+                name="nombreTorneo"
+                label="Nombre del Torneo"
+                rules={[{ required: true, message: 'Por favor ingresa el nombre del torneo' }]}
+            >
+                <Input />
+            </Form.Item>
+            <Form.Item
+                name="fechas"
+                label="Fechas"
+                rules={[{ required: true, message: 'Por favor selecciona las fechas del torneo' }]}
+            >
+                <RangePicker showTime />
+            </Form.Item>
+            <Form.Item>
+                <Button type="primary" htmlType="submit">Crear</Button>
+            </Form.Item>
+        </Form>
         </div>
       </body>
     </>

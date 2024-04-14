@@ -4,7 +4,6 @@ export class TorneoService {
         this.contratoTorneo = contract;
     }
   
-    // Método para obtener el número de jugadores registrados en el torneo
     async getName() {
         return await this.contratoTorneo.methods.getNombreTorneo().call();
     }
