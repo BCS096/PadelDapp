@@ -47,7 +47,7 @@ export class PadelTokenService {
   
     async recompensaRegistro(jugador) { //jugador
       try {
-        await this.padelTokenContract.methods.recompensaRegistro(jugador).send({ from: jugador });
+        await this.padelTokenContract.methods.recompensaRegistro().send({ from: jugador });
       } catch (error) {
         console.error('An error occurred:', error);
       }

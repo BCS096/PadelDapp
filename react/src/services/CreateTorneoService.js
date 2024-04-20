@@ -2,7 +2,7 @@ import TorneoJSON from '../assets/contracts/Torneo.json';
 
 export class CreateTorneoService {
     
-    static TOKEN_CONTRACT = "0xB7073aEed4e5151f3339465Ab2894a7b1751349e";
+    static TOKEN_CONTRACT = "0xd02BAC614217fF78Fa5806dC9D8AFA66C72CB969";
 
     constructor(web3) {
         this.web3 = web3;
