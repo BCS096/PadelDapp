@@ -1,0 +1,98 @@
+.content0-wrapper {
+    min-height: 446px;
+    overflow: hidden;
+  }
+  
+  .content0-wrapper .content0 {
+    height: 100%;
+    padding: 64px 24px;
+  }
+  
+  .content0-wrapper .content0 > .title-wrapper {
+    margin: 0 auto 48px;
+  }
+  
+  .content0-wrapper .content0-block {
+    padding: 0 4%;
+    display: inline-block;
+    text-align: center;
+    min-height: 200px;
+    margin-bottom: 24px;
+  }
+  
+  .content0-wrapper .content0-block-wrapper {
+    position: relative;
+    height: 100%;
+    top: 25%;
+    padding: 20px 0;
+  }
+  
+  .content0-wrapper .content0-block.queue-anim-leaving {
+    position: relative !important;
+  }
+  
+  .content0-wrapper .content0-block-icon {
+    width: 100px;
+    height: 100px;
+    margin: auto;
+  }
+  
+  .content0-wrapper .content0-block-title {
+    line-height: 32px;
+    margin: 10px auto;
+    font-size: 24px;
+  }
+
+  .content0-metamask {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .content0-metamask img {
+    width: 25%;
+    height: 100%
+   
+  } 
+
+  .content0-metamask p {
+    text-align: center;
+    font-size: large;
+    font-weight: bold;
+    color: #12295a;
+  }
+ 
+  @media screen and (max-width: 767px) {
+    .content0-wrapper {
+      min-height: 880px;
+    }
+  }
+
+  .rounded-box {
+    border-radius: 15px; 
+    box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.2); 
+    padding: 20px; /* Espacio interno */
+    margin: 50px auto; /* Margen centrado */
+    justify-content: center;
+    background-color: rgb(188, 220, 247);
+  }
+  
+  .transparent {
+    background-image: url("./padel.jpg");
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+}
+
+.title-metamask h1 {
+  font-size: 60px;
+  color: #1543a7;
+  margin-bottom: 16px;
+  font-family:-apple-system, BlinkMacSystemFont, segoe ui, Roboto, helvetica neue, Arial, noto sans, sans-serif, apple color emoji, segoe ui emoji, segoe ui symbol, noto color emoji;
+}
+
+.title-metamask {
+  margin: 0 auto 64px;
+  text-align: right;
+  padding-right: 16%;
+}
