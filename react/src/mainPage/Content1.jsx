@@ -1,10 +1,8 @@
 import React from 'react';
 import './Content0.css';
 import {Row} from 'antd';
-import Prueba from '../components/Prueba';
 import './Content1.css';
-
-
+import ContainerCards from '../components/ContainerCards';
 
 function Content(props) {      
     return (
@@ -14,7 +12,7 @@ function Content(props) {
             <h1>Clubes adheridos</h1>
           </div>
           <Row className='rounded-box'>
-            <Prueba numColumns={8} />
+            <ContainerCards />
           </Row>      
         </div>
       </div>

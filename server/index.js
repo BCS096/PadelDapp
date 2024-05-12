@@ -2,12 +2,15 @@
 const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
 
 app.use(cors());
 
 app.use(express.json());
+
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // Configuración de la conexión a MySQL
 const connection = mysql.createConnection({
@@ -27,13 +30,17 @@ connection.connect(err => {
 });
 
 // Ruta de ejemplo para obtener datos desde la base de datos
-app.get('/api/data', (req, res) => {
-    connection.query('SELECT * FROM usuario', (err, results) => {
+app.get('/api/clubs', (req, res) => {
+
+    connection.query('SELECT * FROM club', (err, results) => {
         if (err) {
             console.error('Error al ejecutar la consulta:', err);
             res.status(500).json({ error: 'Error interno del servidor' });
             return;
         }
+        for (let i = 0; i < results.length; i++) {
+            results[i].foto = 'http://localhost:3000/images/' + results[i].foto;
+          }
         res.json(results);
     });
 });

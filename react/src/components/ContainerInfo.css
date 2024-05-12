@@ -1,0 +1,13 @@
+.title-info h1 {
+    font-size: 40px;
+    color: #1543a7;
+    margin-bottom: 16px;
+    font-family:-apple-system, BlinkMacSystemFont, segoe ui, Roboto, helvetica neue, Arial, noto sans, sans-serif, apple color emoji, segoe ui emoji, segoe ui symbol, noto color emoji;
+  }
+
+  .info-description p {
+    text-align: center;
+    font-size: large;
+    font-weight: bold;
+    color: #12295a;
+  }

@@ -5,6 +5,15 @@ export class PadelDBService {
     this.backendUrl = 'http://localhost:3000';
   }
 
+  async getClubs() {
+    try {
+      const response = await axios.get(`${this.backendUrl}/api/clubs`);
+      return response.data;
+    } catch (error) {
+      console.error('Error al obtener los clubs:', error);
+      throw error;
+    }
+  }
   async obtenerRegistros() {
     try {
       const response = await axios.get(`${this.backendUrl}/api/data`);
