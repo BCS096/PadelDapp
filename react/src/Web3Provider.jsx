@@ -26,8 +26,12 @@ export const Web3Provider = ({ children }) => {
             const web3Instance = new Web3(window.ethereum);
             setWeb3(web3Instance);
             setAccount(accounts[0]);
-            console.log("Se ha cambiado de cuenta" + accounts[0])
-          });
+            console.log("Se ha cambiado de cuenta" + accounts[0]);
+            if (accounts[0] === undefined) {
+                console.log("No hay cuenta");
+                setWeb3(null);
+            }
+        });
     };
 
     return (

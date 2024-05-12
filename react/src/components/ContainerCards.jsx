@@ -12,10 +12,7 @@ function ContainerCards() {
   useEffect(() => {
     padelDBService.getClubs().then((response) => {
       setListaClubs(response);
-      console.log('Clubs:', response);
     });
-    console.log(listaClubs);
-
   }, []);
 
   return (

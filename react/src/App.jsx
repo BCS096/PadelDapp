@@ -3,14 +3,74 @@ import Banner0 from './mainPage/Banner0';
 import Content0 from './mainPage/Content0';
 import Content1 from './mainPage/Content1';
 import Content2 from './mainPage/Content2';
+import { useState, useEffect } from 'react';
+import { Button, Modal } from 'antd';
+import { useWeb3 } from './Web3Provider';
+import { PadelDBService } from './services/PadelDBService';
+import JugadorForm from './mainPage/JugadorForm';
+
 
 function App() {
+
+  const [infoModal, setInfoModal] = useState(false);
+  const { initializeWeb3, web3, account } = useWeb3();
+  const [isNuevoUsuario, setIsNuevoUsuario] = useState(null);
+  const [newJugador, setNewJugador] = useState(null);
+  const padelDBService = new PadelDBService();
+
+  const openInfoModal = () => {
+    setInfoModal(true);
+  };
+
+  const closeInfoModal = () => {
+    setInfoModal(false);
+  };
+
+  const closeUserModal = () => {
+    setIsNuevoUsuario(false);
+  };
+
+  const closeJugadorModal = () => {
+    setNewJugador(null);
+  }
+
+  const nuevoJugador = () => {
+    setNewJugador(true);
+  };
+
+  const nuevoClub = () => {
+    setNewJugador(false);
+  };
+
+
+  useEffect(() => {
+    if (infoModal && web3) {
+      closeInfoModal();
+      closeUserModal();
+      closeJugadorModal();
+      padelDBService.isNuevoUsuario(account).then(resultado => {
+        setIsNuevoUsuario(resultado);
+      });
+    }
+  }, [infoModal, web3, account]);
+
+  useEffect(() => {
+    // Si isNuevoUsuario cambia y no es nulo, realiza la lógica correspondiente
+    if (isNuevoUsuario !== null) {
+      if (!isNuevoUsuario) {
+        // Si la consulta devuelve falso, redirigir al usuario a otra página
+        //window.location.href = '/otra-pagina';
+      }
+    }
+  }, [isNuevoUsuario]);
+
 
   return (
     <>
       <Banner0
         id="Banner0_1"
         key="Banner0_1"
+        openInfoModal={openInfoModal}
       />
       <Content2
         id="Content2_0"
@@ -24,6 +84,41 @@ function App() {
         id="Content1_0"
         key="Content1_0"
       />
+      {
+        infoModal && (
+          <Modal visible={true} onCancel={closeInfoModal} onOk={closeInfoModal}>
+            <p>Info modal</p>
+          </Modal>
+        )
+      }
+      {
+        isNuevoUsuario && web3 && (
+          <Modal visible={true} footer={null} maskClosable={true} onCancel={closeUserModal}>
+            <div style={{ textAlign: 'center' }}>
+              <h1 style={{ fontSize: '24px', marginBottom: '10px' }}>Escoge tu rol !</h1>
+              <Button type="primary" size="large" style={{ marginBottom: '10px' }} onClick={nuevoJugador} >JUGADOR</Button>
+              <br />
+              <Button size="large" onClick={nuevoClub}>CLUB</Button>
+            </div>
+          </Modal>
+        )
+      }
+      {
+        newJugador && web3 && (
+          <Modal visible={true} footer={null} maskClosable={true} onCancel={closeJugadorModal}>
+            <div>
+            <JugadorForm/>
+            </div>  
+          </Modal>
+        )
+      }
+      {
+        newJugador == false && web3 && (
+          <Modal visible={true} footer={null} maskClosable={true} onCancel={closeJugadorModal}>
+            <p> Club modal </p>
+          </Modal>
+        )
+      }
     </>
   )
 }

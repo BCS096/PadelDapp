@@ -6,12 +6,16 @@ import './Banner0.css';
 import logo from './logo.png';
 import { useWeb3 } from '../Web3Provider';
 
-function Banner(props) {
-  const { ...currentProps } = props;
+function Banner({ openInfoModal }) {
   const {initializeWeb3, web3, account} = useWeb3();
+
+  const handleClick = () => {
+    openInfoModal();
+    initializeWeb3();
+  };
     
     return (
-      <div {...currentProps} className= 'banner0'>
+      <div className= 'banner0'>
         <QueueAnim
           key="QueueAnim"
           type={['bottom', 'top']}
@@ -21,7 +25,7 @@ function Banner(props) {
           <div key="title" className= 'banner0-title'>
               <img src={logo} width="100%" alt="img" />
           </div>
-          <Button key="button" className= 'banner0-button' onClick={initializeWeb3}>
+          <Button key="button" className= 'banner0-button' onClick={handleClick}>
             Empieza a jugar!
           </Button>
         </QueueAnim>

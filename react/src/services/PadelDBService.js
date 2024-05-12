@@ -14,12 +14,16 @@ export class PadelDBService {
       throw error;
     }
   }
-  async obtenerRegistros() {
+
+  async isNuevoUsuario(address) {
     try {
-      const response = await axios.get(`${this.backendUrl}/api/data`);
-      return response.data;
+      const response = await axios.get(`${this.backendUrl}/api/usuario/${address}`);
+      if (response.data) return false;
+      const response2 = await axios.get(`${this.backendUrl}/api/club/${address}`);
+      if (response2.data) return false;
+      return true;
     } catch (error) {
-      console.error('Error al obtener los registros:', error);
+      console.error('Error al comprobar si es un nuevo usuario:', error);
       throw error;
     }
   }

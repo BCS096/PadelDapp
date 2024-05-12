@@ -45,6 +45,23 @@ app.get('/api/clubs', (req, res) => {
     });
 });
 
+app.get('/api/club/:address', (req, res) => {
+
+    const address = req.params.address;
+    
+    connection.query('SELECT * FROM club WHERE address = ?',[address], (err, results) => {
+        if (err) {
+            console.error('Error al ejecutar la consulta:', err);
+            res.status(500).json({ error: 'Error interno del servidor' });
+            return;
+        }
+        for (let i = 0; i < results.length; i++) {
+            results[i].foto = 'http://localhost:3000/images/' + results[i].foto;
+          }
+        res.json(results[0]);
+    });
+});
+
 //añadir torneo
 app.post('/api/torneo', (req, res) => {
     const { address, owner} = req.body;
@@ -60,8 +77,8 @@ app.post('/api/torneo', (req, res) => {
 
 //añadir usuario
 app.post('/api/usuario', (req, res) => {
-    const { address } = req.body;
-    connection.query('INSERT INTO usuario (address) VALUES (?)', [address], (err, result) => {
+    const { address, email, edad, telefono, genero, nombre} = req.body;
+    connection.query('INSERT INTO jugador (address, email, nombre, genero, edad, telefono) VALUES (?, ?, ?, ?, ?, ?)', [address, email, nombre, genero, edad, telefono], (err, result) => {
         if (err) {
             console.error('Error al ejecutar la consulta:', err);
             res.status(500).json({ error: 'Error interno del servidor' });
@@ -102,7 +119,7 @@ app.put('/api/usuario/:address', (req, res) => {
         return res.status(400).json({ error: 'No se proporcionaron campos para actualizar' });
     }
 
-    connection.query('UPDATE usuario SET ? WHERE address = ?', [updateFields, address], (err, result) => {
+    connection.query('UPDATE jugador SET ? WHERE address = ?', [updateFields, address], (err, result) => {
         if (err) {
             console.error('Error al ejecutar la consulta:', err);
             return res.status(500).json({ error: 'Error interno del servidor' });
@@ -284,14 +301,11 @@ app.get('/api/torneo/player/:jugador', (req, res) => {
 //getUsuario
 app.get('/api/usuario/:address', (req, res) => {
     const address = req.params.address;
-    connection.query('SELECT * FROM usuario WHERE address = ?', [address], (err, results) => {
+    connection.query('SELECT * FROM jugador WHERE address = ?', [address], (err, results) => {
         if (err) {
             console.error('Error al ejecutar la consulta:', err);
             res.status(500).json({ error: 'Error interno del servidor' });
             return;
-        }
-        if (results.length === 0) {
-            return res.status(404).json({ error: 'Usuario no encontrado' });
         }
         res.json(results[0]);
     });
@@ -301,7 +315,7 @@ app.get('/api/usuario/:address', (req, res) => {
 app.get('/api/usuario/torneo/:address', (req, res) => {
     const address = req.params.address;
     // SELECT usuario.*, equipoId FROM usuario JOIN equipo ON usuario.address = equipo.jugador1 OR usuario.address = equipo.jugador2 JOIN participante ON equipo.id = participante.equipoId WHERE participante.addressTorneo = 'torneo';
-    connection.query('SELECT usuario.*, equipoId FROM usuario JOIN equipo ON usuario.address = equipo.jugador1 OR usuario.address = equipo.jugador2 ' +
+    connection.query('SELECT jugador.*, equipoId FROM jugador JOIN equipo ON jugador.address = equipo.jugador1 OR jugador.address = equipo.jugador2 ' +
      'JOIN participante ON equipo.id = participante.equipoId WHERE participante.addressTorneo = ?', [address], (err, results) => {
         if (err) {
             console.error('Error al ejecutar la consulta:', err);
