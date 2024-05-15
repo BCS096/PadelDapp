@@ -1,6 +1,8 @@
 // index.js
 const express = require('express');
 const mysql = require('mysql2');
+const fs = require('fs');
+const multer = require('multer');
 const cors = require('cors');
 const path = require('path');
 
@@ -11,6 +13,22 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
+
+// Configuración de multer para almacenar las imágenes en una carpeta específica
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'images/') // Aquí define la carpeta donde deseas almacenar las imágenes
+    },
+    filename: function (req, file, cb) {
+        // Define el nombre del archivo de la imagen
+        console.log(file.fieldname);
+        console.log(file.buffer)
+        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+    }
+});
+
+// Configuración del middleware multer
+const upload = multer({ storage: storage });
 
 // Configuración de la conexión a MySQL
 const connection = mysql.createConnection({
@@ -29,7 +47,32 @@ connection.connect(err => {
     console.log('Conectado a la base de datos MySQL');
 });
 
-// Ruta de ejemplo para obtener datos desde la base de datos
+// Ruta para manejar la carga de imágenes
+app.post('/upload', upload.single('imagen'), (req, res) => {
+    // Si has definido un campo llamado 'imagen' en el formulario de carga de archivos, puedes acceder a la imagen utilizando req.file
+    if (!req.file) {
+        return res.status(400).send('No se ha subido ninguna imagen.');
+    }
+
+    res.json({ filename: req.file.filename });
+
+});
+
+//añadir club
+app.post('/api/club', (req, res) => {
+    const { address, direccion, telefono, email, imagen, nombre } = req.body;
+    console.log("imagen", imagen);
+    connection.query('INSERT INTO club (address, direccio, telefono, email, foto, nom) VALUES (?, ?, ?, ?, ?, ?)', [address, direccion, telefono, email, imagen, nombre], (err, result) => {
+        if (err) {
+            console.error('Error al ejecutar la consulta:', err);
+            res.status(500).json({ error: 'Error interno del servidor' });
+            return;
+        }
+        res.json({ id: result.insertId });
+    });
+});
+
+// get clubs
 app.get('/api/clubs', (req, res) => {
 
     connection.query('SELECT * FROM club', (err, results) => {
@@ -40,16 +83,17 @@ app.get('/api/clubs', (req, res) => {
         }
         for (let i = 0; i < results.length; i++) {
             results[i].foto = 'http://localhost:3000/images/' + results[i].foto;
-          }
+        }
         res.json(results);
     });
 });
 
+//get club
 app.get('/api/club/:address', (req, res) => {
 
     const address = req.params.address;
-    
-    connection.query('SELECT * FROM club WHERE address = ?',[address], (err, results) => {
+
+    connection.query('SELECT * FROM club WHERE address = ?', [address], (err, results) => {
         if (err) {
             console.error('Error al ejecutar la consulta:', err);
             res.status(500).json({ error: 'Error interno del servidor' });
@@ -57,14 +101,14 @@ app.get('/api/club/:address', (req, res) => {
         }
         for (let i = 0; i < results.length; i++) {
             results[i].foto = 'http://localhost:3000/images/' + results[i].foto;
-          }
+        }
         res.json(results[0]);
     });
 });
 
 //añadir torneo
 app.post('/api/torneo', (req, res) => {
-    const { address, owner} = req.body;
+    const { address, owner } = req.body;
     connection.query('INSERT INTO torneo (address, owner, status) VALUES (?, ?, ?)', [address, owner, "OPENED"], (err, result) => {
         if (err) {
             console.error('Error al ejecutar la consulta:', err);
@@ -77,7 +121,7 @@ app.post('/api/torneo', (req, res) => {
 
 //añadir usuario
 app.post('/api/usuario', (req, res) => {
-    const { address, email, edad, telefono, genero, nombre} = req.body;
+    const { address, email, edad, telefono, genero, nombre } = req.body;
     connection.query('INSERT INTO jugador (address, email, nombre, genero, edad, telefono) VALUES (?, ?, ?, ?, ?, ?)', [address, email, nombre, genero, edad, telefono], (err, result) => {
         if (err) {
             console.error('Error al ejecutar la consulta:', err);
@@ -92,7 +136,7 @@ app.post('/api/usuario', (req, res) => {
 app.put('/api/usuario/:address', (req, res) => {
     const address = req.params.address;
     const { name, email, telefono, genero, edad } = req.body;
-    
+
     let updateFields = {};
 
     if (name) {
@@ -240,14 +284,14 @@ app.delete('/api/participacion/:jugadorAddress/torneo/:addressTorneo', (req, res
             res.json({ message: 'Participacion cancelada correctamente' });
         });
     });
-    
+
 });
 
 //update torneoStatus
 app.put('/api/torneo/:address/status', (req, res) => {
     const address = req.params.address;
     const { status } = req.body;
-    
+
     let updateFields = {};
 
     if (status) {
@@ -316,14 +360,14 @@ app.get('/api/usuario/torneo/:address', (req, res) => {
     const address = req.params.address;
     // SELECT usuario.*, equipoId FROM usuario JOIN equipo ON usuario.address = equipo.jugador1 OR usuario.address = equipo.jugador2 JOIN participante ON equipo.id = participante.equipoId WHERE participante.addressTorneo = 'torneo';
     connection.query('SELECT jugador.*, equipoId FROM jugador JOIN equipo ON jugador.address = equipo.jugador1 OR jugador.address = equipo.jugador2 ' +
-     'JOIN participante ON equipo.id = participante.equipoId WHERE participante.addressTorneo = ?', [address], (err, results) => {
-        if (err) {
-            console.error('Error al ejecutar la consulta:', err);
-            res.status(500).json({ error: 'Error interno del servidor' });
-            return;
-        }
-        res.json(results);
-    });
+        'JOIN participante ON equipo.id = participante.equipoId WHERE participante.addressTorneo = ?', [address], (err, results) => {
+            if (err) {
+                console.error('Error al ejecutar la consulta:', err);
+                res.status(500).json({ error: 'Error interno del servidor' });
+                return;
+            }
+            res.json(results);
+        });
 });
 
 //getTorneosActivos

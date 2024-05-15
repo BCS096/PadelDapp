@@ -8,6 +8,8 @@ import { Button, Modal } from 'antd';
 import { useWeb3 } from './Web3Provider';
 import { PadelDBService } from './services/PadelDBService';
 import JugadorForm from './mainPage/JugadorForm';
+import ClubForm from './mainPage/ClubForm';
+import MetaMaskLogo from './mainPage/metamask.webp';
 
 
 function App() {
@@ -87,7 +89,12 @@ function App() {
       {
         infoModal && (
           <Modal visible={true} onCancel={closeInfoModal} onOk={closeInfoModal}>
-            <p>Info modal</p>
+            <div style={{ textAlign: 'center' }}>
+              <img src={MetaMaskLogo} alt="MetaMask Logo" style={{ width: '100px', height: '100px', marginBottom: '20px' }} />
+              <p>
+                Active su cuenta MetaMask a través de la extensión. Si no tiene MetaMask en el navegador, puede instalarlo haciendo clic <a href="https://chromewebstore.google.com/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=es&utm_source=ext_sidebar" target="_blank" rel="noopener noreferrer">aquí</a>.
+              </p>
+            </div>
           </Modal>
         )
       }
@@ -107,15 +114,15 @@ function App() {
         newJugador && web3 && (
           <Modal visible={true} footer={null} maskClosable={true} onCancel={closeJugadorModal}>
             <div>
-            <JugadorForm/>
-            </div>  
+              <JugadorForm />
+            </div>
           </Modal>
         )
       }
       {
         newJugador == false && web3 && (
           <Modal visible={true} footer={null} maskClosable={true} onCancel={closeJugadorModal}>
-            <p> Club modal </p>
+            <ClubForm />
           </Modal>
         )
       }

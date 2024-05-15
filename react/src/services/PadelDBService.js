@@ -1,4 +1,5 @@
 import axios from 'axios';
+import FormData from 'form-data';
 
 export class PadelDBService {
   constructor() {
@@ -14,6 +15,25 @@ export class PadelDBService {
       throw error;
     }
   }
+
+  async añadirClub(values) {
+    const formData = new FormData();
+    formData.append('imagen', values.imagen);
+    console.log("valuesImage", values.imagen)
+    try {
+        const response = await axios.post(`${this.backendUrl}/upload`, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data', 
+            }
+        });
+        values.imagen = response.data.filename;
+        await axios.post(`${this.backendUrl}/api/club`, values);
+
+
+    } catch (error) {
+        console.error('Error al cargar la imagen:', error);
+    }
+}
 
   async isNuevoUsuario(address) {
     try {
