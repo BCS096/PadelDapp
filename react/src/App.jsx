@@ -10,6 +10,7 @@ import { PadelDBService } from './services/PadelDBService';
 import JugadorForm from './mainPage/JugadorForm';
 import ClubForm from './mainPage/ClubForm';
 import MetaMaskLogo from './mainPage/metamask.webp';
+import { useNavigate } from 'react-router-dom';
 
 
 function App() {
@@ -17,8 +18,11 @@ function App() {
   const [infoModal, setInfoModal] = useState(false);
   const { initializeWeb3, web3, account } = useWeb3();
   const [isNuevoUsuario, setIsNuevoUsuario] = useState(null);
+  const [redirect, setRedirect] = useState(false); 
   const [newJugador, setNewJugador] = useState(null);
   const padelDBService = new PadelDBService();
+
+  const navigate = useNavigate();
 
   const openInfoModal = () => {
     setInfoModal(true);
@@ -51,20 +55,26 @@ function App() {
       closeUserModal();
       closeJugadorModal();
       padelDBService.isNuevoUsuario(account).then(resultado => {
+        console.log('resultado', resultado);
         setIsNuevoUsuario(resultado);
+        setRedirect(!resultado);
       });
     }
   }, [infoModal, web3, account]);
 
   useEffect(() => {
     // Si isNuevoUsuario cambia y no es nulo, realiza la lógica correspondiente
-    if (isNuevoUsuario !== null) {
-      if (!isNuevoUsuario) {
-        // Si la consulta devuelve falso, redirigir al usuario a otra página
-        //window.location.href = '/otra-pagina';
-      }
+    if (redirect) {
+      padelDBService.isJugador(account).then(resultado => {
+        if (resultado) {
+          navigate('/jugador');
+        } else {
+          navigate('/club');
+        }
+      });
+      //navigate('/club');
     }
-  }, [isNuevoUsuario]);
+  }, [redirect]);
 
 
   return (

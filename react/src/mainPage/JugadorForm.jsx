@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Form, Input, Select, Space } from 'antd';
 import { PadelDBService } from '../services/PadelDBService';
 import { useWeb3 } from '../Web3Provider';
+import { useNavigate } from 'react-router-dom';
 const { Option } = Select;
 const layout = {
     labelCol: {
@@ -26,11 +27,13 @@ const JugadorForm = () => {
 
     const padelDBService = new PadelDBService();
 
+    const navigate = useNavigate();
+
     const onFinish = (values) => {
         values.address = account;
         padelDBService.añadirUsuario(values).then(() => {
             console.log("Usuario añadido");
-            //redireccionar
+            navigate('/jugador');
         });
 
     };

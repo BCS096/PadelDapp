@@ -75,6 +75,7 @@
     margin: 50px auto; /* Margen centrado */
     justify-content: center;
     background-color: rgb(188, 220, 247);
+    padding: 2%;
   }
   
   .transparent {

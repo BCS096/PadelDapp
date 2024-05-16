@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Button, Form, Input, Select, Space } from 'antd';
 import { useWeb3 } from '../Web3Provider';
 import { PadelDBService } from '../services/PadelDBService';
+import { useNavigate } from 'react-router-dom';
+import './ClubForm.css';
 
 const { Option } = Select;
 const layout = {
@@ -23,25 +25,28 @@ const ClubForm = () => {
     const [form] = Form.useForm();
     const { account } = useWeb3();
     const padelDBService = new PadelDBService();
-    const [selectedFile, setSelectedFile] = useState(null);
+    const [selectedFile, setSelectedFile] = useState('');
+
+    const navigate = useNavigate();
 
     const onFinish = (values) => {
         values.address = account;
         values.imagen = selectedFile;
         padelDBService.añadirClub(values).then(() => {
-            //redireccion
+            navigate('/club');
         });
     };
 
     const onReset = () => {
         form.resetFields();
+        setSelectedFile('');
     };
 
     const handleFileInputChange = (event) => {
         const file = event.target.files[0];
         // Aquí puedes hacer lo que necesites con el archivo seleccionado
         setSelectedFile(file);
-        
+
     };
 
     return (
@@ -108,7 +113,12 @@ const ClubForm = () => {
                     },
                 ]}
             >
-                <input type="file" onChange={handleFileInputChange} />
+                <div className="custom-file-input">
+                    <input type="file" className="file-input" onChange={handleFileInputChange} />
+                    <label htmlFor="file-input" className={`file-label ${selectedFile.name ? 'selected' : ''}`}>
+                        {selectedFile.name || 'Seleccionar archivo'}
+                    </label>
+                </div>
             </Form.Item>
 
             <Form.Item {...tailLayout}>

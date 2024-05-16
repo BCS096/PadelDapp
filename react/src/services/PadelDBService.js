@@ -35,6 +35,17 @@ export class PadelDBService {
     }
 }
 
+  async isJugador(address) {
+    try {
+      const response = await axios.get(`${this.backendUrl}/api/usuario/${address}`);
+      if (response.data) return true;
+      return false;
+    } catch (error) {
+      console.error('Error al comprobar si es un jugador:', error);
+      throw error;
+    }
+  }
+
   async isNuevoUsuario(address) {
     try {
       const response = await axios.get(`${this.backendUrl}/api/usuario/${address}`);

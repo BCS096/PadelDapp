@@ -1,0 +1,33 @@
+.custom-file-input {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.file-input {
+    position: absolute;
+    font-size: 100px;
+    opacity: 0;
+    right: 0;
+    top: 0;
+}
+
+.file-label {
+    background-color: #007bff;
+    color: #fff;
+    padding: 8px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.file-label.selected {
+    background-color: #28a745; /* Cambia el color a verde cuando se selecciona un archivo */
+}
+
+.file-label:hover {
+    background-color: #0056b3;
+}
