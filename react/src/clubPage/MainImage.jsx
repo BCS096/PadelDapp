@@ -5,8 +5,9 @@ function MainImage ({ image }) {
     return (
         <Image
         width={50}
+        height={50}
         style = {{borderRadius: '50%'}}
-        src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+        src={image}
         />
     );
 }

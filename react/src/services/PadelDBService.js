@@ -16,6 +16,16 @@ export class PadelDBService {
     }
   }
 
+  async getClub(address) {
+    try {
+      const response = await axios.get(`${this.backendUrl}/api/club/${address}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error al obtener el club:', error);
+      throw error;
+    }
+  }
+
   async añadirClub(values) {
     const formData = new FormData();
     formData.append('imagen', values.imagen);

@@ -16,7 +16,7 @@ import { useNavigate } from 'react-router-dom';
 function App() {
 
   const [infoModal, setInfoModal] = useState(false);
-  const { initializeWeb3, web3, account } = useWeb3();
+  const { initializeWeb3, web3, account, setWeb3, setAccount } = useWeb3();
   const [isNuevoUsuario, setIsNuevoUsuario] = useState(null);
   const [redirect, setRedirect] = useState(false); 
   const [newJugador, setNewJugador] = useState(null);
@@ -47,6 +47,11 @@ function App() {
     setNewJugador(false);
   };
 
+  useEffect(() => {
+    setWeb3(null);
+    setAccount("");
+  }, []);
+
 
   useEffect(() => {
     if (infoModal && web3) {
@@ -62,7 +67,6 @@ function App() {
   }, [infoModal, web3, account]);
 
   useEffect(() => {
-    // Si isNuevoUsuario cambia y no es nulo, realiza la lógica correspondiente
     if (redirect) {
       padelDBService.isJugador(account).then(resultado => {
         if (resultado) {
@@ -71,7 +75,6 @@ function App() {
           navigate('/club');
         }
       });
-      //navigate('/club');
     }
   }, [redirect]);
 

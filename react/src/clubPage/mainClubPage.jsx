@@ -6,6 +6,10 @@ import Content2 from './Content2';
 import FileContent from './FileContent';
 import { GiTennisBall } from "react-icons/gi";
 import MainImage from './MainImage';
+import { useWeb3 } from '../Web3Provider';
+import { PadelDBService } from '../services/PadelDBService';
+import { useNavigate } from 'react-router-dom';
+
 
 const { Sider, Content } = Layout;
 
@@ -18,9 +22,9 @@ function getItem(label, key, icon, to) {
 }
 
 const items = [
-  getItem('CrearTorneo', '1', <GiTennisBall /> , 'crearTorneo'),
-  getItem('Mis Torneos', '2',  <GiTennisBall /> , 'torneos'),
-  getItem('Torneos activos', '9',  <GiTennisBall /> , 'torneos-activos'),
+  getItem('Crear Torneo', '1', <GiTennisBall />, 'crearTorneo'),
+  getItem('Mis Torneos', '2', <GiTennisBall />, 'torneos'),
+  getItem('Torneos activos', '9', <GiTennisBall />, 'torneos-activos'),
 ];
 
 const MainClubPage = () => {
@@ -29,15 +33,30 @@ const MainClubPage = () => {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
+  const { account } = useWeb3();
+
+  const [foto, setFoto] = useState('');
+
+  const padelDBService = new PadelDBService();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if( account === '') {
+      navigate('/home')
+    }
+    console.log('account', account);
+    padelDBService.getClub(account).then((club) => {
+      setFoto(club.foto);
+    });
+  }, [account]);
+
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Sider theme='dark' collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
         <Row justify="center" style={{ padding: '20px' }}>
+          <MainImage image={foto} />
+          {/* TODO: add club name and number of PDTs */}
         </Row>
-
-
-
-        
         <Menu theme="dark" defaultSelectedKeys={['0']} mode="inline" items={items} />
       </Sider>
       <Layout className="site-layout" style={{ margin: '2%' }}>
@@ -50,7 +69,7 @@ const MainClubPage = () => {
             flex: 1,
           }}
         >
-        <Routes>
+          <Routes>
             <Route path="crearTorneo" element={<Content1 />} />
             <Route path="torneos" element={<Content2 />} />
             <Route path="torneos-activos" element={<FileContent />} />
