@@ -13,9 +13,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <Router>
         <Routes>
           <Route path="/home" element={<App />} />
-          <Route path="/club" element={<MainClubPage />} />
+          <Route path="/club/*" element={<MainClubPage />} />
           <Route path="/jugador" element={<MainPlayerPage />} />
-
           <Route path="*" element={<Navigate to="/home" />} />
         </Routes>
       </Router>
