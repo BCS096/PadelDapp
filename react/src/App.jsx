@@ -21,7 +21,6 @@ function App() {
   const [redirect, setRedirect] = useState(false); 
   const [newJugador, setNewJugador] = useState(null);
   const padelDBService = new PadelDBService();
-
   const navigate = useNavigate();
 
   const openInfoModal = () => {

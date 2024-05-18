@@ -1,11 +1,65 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { Link, Routes, Route } from 'react-router-dom';
+import { Layout, Menu, Row, theme } from 'antd';
+import Content1 from './Content1';
+import Content2 from './Content2';
+import FileContent from './FileContent';
+import { GiTennisBall } from "react-icons/gi";
+import MainImage from './MainImage';
 
-function MainClubPage() {
-    return (
-        <div>
-            <h1>Hello, Club Page!</h1>
-        </div>
-    );
+const { Sider, Content } = Layout;
+
+function getItem(label, key, icon, to) {
+  return {
+    key,
+    icon,
+    label: <Link to={to}>{label}</Link>,
+  };
 }
+
+const items = [
+  getItem('CrearTorneo', '1', <GiTennisBall /> , 'crearTorneo'),
+  getItem('Mis Torneos', '2',  <GiTennisBall /> , 'torneos'),
+  getItem('Torneos activos', '9',  <GiTennisBall /> , 'torneos-activos'),
+];
+
+const MainClubPage = () => {
+  const [collapsed, setCollapsed] = useState(false);
+  const {
+    token: { colorBgContainer, borderRadiusLG },
+  } = theme.useToken();
+
+  return (
+    <Layout style={{ minHeight: '100vh' }}>
+      <Sider theme='dark' collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
+        <Row justify="center" style={{ padding: '20px' }}>
+        </Row>
+
+
+
+        
+        <Menu theme="dark" defaultSelectedKeys={['0']} mode="inline" items={items} />
+      </Sider>
+      <Layout className="site-layout" style={{ margin: '2%' }}>
+        <Content
+          style={{
+            margin: '16px',
+            padding: '24px',
+            background: colorBgContainer,
+            borderRadius: borderRadiusLG,
+            flex: 1,
+          }}
+        >
+        <Routes>
+            <Route path="crearTorneo" element={<Content1 />} />
+            <Route path="torneos" element={<Content2 />} />
+            <Route path="torneos-activos" element={<FileContent />} />
+            <Route path="*" element={<Content1 />} />
+          </Routes>
+        </Content>
+      </Layout>
+    </Layout>
+  );
+};
 
 export default MainClubPage;
