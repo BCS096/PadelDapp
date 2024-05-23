@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Content2 = () => {
+const MisTorneosPage = () => {
   return (
     <div>
       <h1>Contenido de la Opción 2</h1>
@@ -12,4 +12,4 @@ const Content2 = () => {
   );
 };
 
-export default Content2;
+export default MisTorneosPage;

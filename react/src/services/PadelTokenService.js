@@ -8,7 +8,7 @@ export class PadelTokenService {
       return await this.padelTokenContract.methods.totalSupply().call();
     }
   
-    async getBalanceOf(account) { // jugador
+    async getBalanceOf(account) { // jugador y club
       return this.padelTokenContract.methods.balanceOf(account).call();
     }
   

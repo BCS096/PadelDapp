@@ -15,7 +15,6 @@ export const Web3Provider = ({ children }) => {
             const web3Instance = new Web3(window.ethereum);
             setWeb3(web3Instance);
             setAccount(savedAccount);
-            console.log("Me renderizo :)");
         }
     }, []);
 

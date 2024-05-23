@@ -108,8 +108,8 @@ app.get('/api/club/:address', (req, res) => {
 
 //añadir torneo
 app.post('/api/torneo', (req, res) => {
-    const { address, owner } = req.body;
-    connection.query('INSERT INTO torneo (address, owner, status) VALUES (?, ?, ?)', [address, owner, "OPENED"], (err, result) => {
+    const { address, owner, nombre, fechaInicio, fechaFinal } = req.body;
+    connection.query('INSERT INTO torneo (address, owner, status, nombre, fechaInicio, fechaFinal) VALUES (?, ?, ?, ?, ?, ?)', [address, owner, "OPENED", nombre, fechaInicio, fechaFinal], (err, result) => {
         if (err) {
             console.error('Error al ejecutar la consulta:', err);
             res.status(500).json({ error: 'Error interno del servidor' });
@@ -174,6 +174,51 @@ app.put('/api/usuario/:address', (req, res) => {
         }
 
         res.json({ message: 'Usuario actualizado correctamente' });
+    });
+});
+
+//update club
+app.put('/api/club/:address', (req, res) => {
+    const address = req.params.address;
+    const { nombre, direccion, telefono, email, imagen } = req.body;
+
+    let updateFields = {};
+
+    if (nombre) {
+        updateFields.nom = nombre;
+    }
+
+    if (direccion) {
+        updateFields.direccio = direccion;
+    }
+
+    if (telefono) {
+        updateFields.telefono = telefono;
+    }
+
+    if (email) {
+        updateFields.email = email;
+    }
+
+    if (imagen) {
+        updateFields.foto = imagen;
+    }
+
+    if (Object.keys(updateFields).length === 0) {
+        return res.status(400).json({ error: 'No se proporcionaron campos para actualizar' });
+    }
+
+    connection.query('UPDATE club SET ? WHERE address = ?', [updateFields, address], (err, result) => {
+        if (err) {
+            console.error('Error al ejecutar la consulta:', err);
+            return res.status(500).json({ error: 'Error interno del servidor' });
+        }
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Club no encontrado' });
+        }
+
+        res.json({ message: 'Club actualizado correctamente' });
     });
 });
 

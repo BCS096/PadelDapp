@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const FileContent = () => {
+const TorneosActivosPage = () => {
   return (
     <div>
       <h1>Contenido de los Archivos</h1>
@@ -13,4 +13,4 @@ const FileContent = () => {
   );
 };
 
-export default FileContent;
+export default TorneosActivosPage;

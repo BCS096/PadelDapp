@@ -29,7 +29,6 @@ export class PadelDBService {
   async añadirClub(values) {
     const formData = new FormData();
     formData.append('imagen', values.imagen);
-    console.log("valuesImage", values.imagen)
     try {
         const response = await axios.post(`${this.backendUrl}/upload`, formData, {
             headers: {
@@ -43,7 +42,25 @@ export class PadelDBService {
     } catch (error) {
         console.error('Error al cargar la imagen:', error);
     }
-}
+ }
+
+  async actualizarImagenClub(address, imagen) {
+    const formData = new FormData();
+    formData.append('imagen', imagen);
+    try {
+      const response = await axios.post(`${this.backendUrl}/upload`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data', 
+        }
+    });
+    imagen = response.data.filename;
+    await this.updateClub(address, { imagen });
+    return "http://localhost:3000/images/" + imagen;
+    } catch (error) {
+      console.error('Error al actualizar la imagen del club:', error);
+      throw error;
+    }
+  }
 
   async isJugador(address) {
     try {
@@ -92,6 +109,15 @@ export class PadelDBService {
       await axios.put(`${this.backendUrl}/api/usuario/${address}`, data);
     } catch (error) {
       console.error('Error al actualizar el usuario:', error);
+      throw error;
+    }
+  }
+
+  async updateClub(address, data) {
+    try {
+      await axios.put(`${this.backendUrl}/api/club/${address}`, data);
+    } catch (error) {
+      console.error('Error al actualizar el club:', error);
       throw error;
     }
   }
