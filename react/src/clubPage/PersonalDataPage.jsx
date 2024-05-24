@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './PersonalDataPage.css';
 import { Form, Input, DatePicker, Button, Modal, Alert, Divider, Spin } from 'antd';
 import { useState } from 'react';
@@ -6,19 +6,44 @@ import { Col } from 'antd';
 import { Row } from 'antd';
 import { PadelDBService } from '../services/PadelDBService';
 import { Image } from 'antd';
+import { InputNumber } from 'antd';
+import { useWeb3 } from '../Web3Provider';
+import { PadelTokenService } from '../services/PadelTokenService';
+import PadelTokenJSON from '../assets/contracts/PadelToken.json';
 
+const PDT_CONTRACT = "0x8F9991eEAF9Be7EC2FD410dFF0F6094f51347531";
 
 const PersonalDataPage = ({ pdt, club, imagen, setFoto, setClubName }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+  const [inputValue, setInputValue] = useState(0);
+  const [loadingVenta, setLoadingVenta] = useState(false);
   const [selectedFile, setSelectedFile] = useState('');
   const padelDBService = new PadelDBService();
+  const { account, web3 } = useWeb3();
   const [modal, setModal] = useState({
     visible: false,
     message: '',
     description: '',
     type: ''
   });
+  const [pdtVenta, setPdtVenta] = useState(0);
+  const [padelTokenService, setPadelTokenService] = useState(null);
+
+  useEffect(() => {
+    if(web3){
+      const pdtContract = new web3.eth.Contract(PadelTokenJSON.abi, PDT_CONTRACT);
+      setPadelTokenService(new PadelTokenService(pdtContract));
+    }
+  }, [web3]);
+
+  useEffect(() => {
+    if (padelTokenService != null) {
+      padelTokenService.getAllowSell(account).then((response) => {
+        setPdtVenta(response);
+      });
+    }
+  }, [padelTokenService]);
 
   const handleFinish = async (values) => {
     setLoading(true);
@@ -40,6 +65,30 @@ const PersonalDataPage = ({ pdt, club, imagen, setFoto, setClubName }) => {
       });
     }
     setLoading(false);
+  };
+
+  const handlePDTVenta = async () => {
+    setLoadingVenta(true);
+    try {
+      await padelTokenService.setAllowSell(account, inputValue);
+      await padelTokenService.getAllowSell(account).then((response) => {
+        setPdtVenta(response);
+      });
+      setModal({
+        visible: true,
+        message: 'Tokens en venta actualizados',
+        description: 'Los tokens en venta han sido actualizados correctamente',
+        type: 'success'
+      });
+    } catch (error) {
+      setModal({
+        visible: true,
+        message: 'Error al actualizar los tokens en venta',
+        description: 'Ha ocurrido un error al actualizar los tokens en venta',
+        type: 'error'
+      });
+    }
+    setLoadingVenta(false);
   };
 
   const handleCancel = () => {
@@ -113,11 +162,11 @@ const PersonalDataPage = ({ pdt, club, imagen, setFoto, setClubName }) => {
           </Form>
         </div>
       </Row>
-      <Row className="right-pane">
-        <div className='image-div'>
+      <div className="right-pane">
+        <div className='personal-div'>
           <Image
-            width={300}
-            height={200}
+            width={463}
+            height={300}
             src={imagen}
           />
           <div className="custom-file-input-info image-button" onChange={handleFileInputChange}>
@@ -127,8 +176,31 @@ const PersonalDataPage = ({ pdt, club, imagen, setFoto, setClubName }) => {
             </label>
           </div>
         </div>
-        
-      </Row>
+        <div className="personal-div">
+          <h2 className='blue-color'>
+            Nº de PDT en venta: {pdtVenta}
+          </h2>
+          <div style={{display: 'flex'}}>
+            <InputNumber
+              min={0}
+              defaultValue={0}
+              value={inputValue}
+              onChange={setInputValue}
+              style={{ width: '300px', height: '40px', fontSize: '36px', textAlign: 'center', justifyContent: 'center', margin: '0 30px'}}
+              className="square-input-number"
+            />
+            <Button
+              type="primary"
+              onClick={handlePDTVenta}
+              disabled={loadingVenta}
+              size="large"
+              style={{ width: '100%', backgroundColor: 'rgb(0, 33, 64)', borderColor: '#1e90ff' }}
+            >
+              {loadingVenta ? <Spin /> : 'Establecer'}
+            </Button>
+          </div>
+        </div>
+      </div>
       <Modal
         visible={modal.visible}
         onOk={handleCancel}

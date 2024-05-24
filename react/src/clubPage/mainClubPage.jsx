@@ -102,7 +102,8 @@ const MainClubPage = () => {
             background: colorBgContainer,
             borderRadius: borderRadiusLG,
             display: 'flex',
-            alignItems: 'center'
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
         >
           <Routes>

@@ -20,6 +20,7 @@
   .right-pane {
     display: flex;
     justify-content: center;
+    flex-direction: column;
     align-items: center;
     font-size: 24px;
     flex: 1 1 auto; /* flex-grow: 1; flex-shrink: 1; flex-basis: auto; */
@@ -28,7 +29,7 @@
     box-sizing: border-box
   }
 
-  .image-div {
+  .personal-div {
     border: 1px solid #d9d9d9;
     border-radius: 8px;
     background-color: #fff;
@@ -37,6 +38,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin: 2%;
   }
 
   .image-button {
@@ -77,4 +79,17 @@
   
 .blue-color {
   color: rgb(0, 33, 64);
+}
+
+.square-input-number .ant-input-number-input-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.square-input-number .ant-input-number-input {
+  font-size: 36px !important; /* Aumenta el tamaño de la fuente */
+  text-align: center;
+  padding: 0 !important; /* Elimina el padding */
 }
