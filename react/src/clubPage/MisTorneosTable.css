@@ -1,0 +1,22 @@
+.custom-table .ant-table-thead > tr > th {
+    background: rgb(0, 33, 64);
+    color: white;
+    font-weight: bold;
+  }
+  
+  .custom-table .ant-table-thead > tr > th .anticon,
+  .custom-table .ant-table-thead > tr > th .ant-table-column-sorter {
+    color: white;
+  }
+  
+.ant-pagination .ant-pagination-item-active {
+    border-color: rgb(0, 33, 64);
+}
+
+.ant-pagination .ant-pagination-item-active a {
+    color: rgb(0, 33, 64);
+}
+
+.button-actions {
+  background-color:  rgb(0, 33, 64);
+}
