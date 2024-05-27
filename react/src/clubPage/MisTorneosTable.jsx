@@ -4,10 +4,12 @@ import { Button, Input, Space, Table, DatePicker, Tag } from 'antd';
 import Highlighter from 'react-highlight-words';
 import moment from 'moment';
 import './MisTorneosTable.css';
+import { useNavigate } from 'react-router-dom';
 
 
 
-const App = ( {data} ) => {
+const App = ( {torneos, setTorneo} ) => {
+  const navigate = useNavigate();
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef(null);
@@ -138,8 +140,8 @@ const App = ( {data} ) => {
   });
 
   const handleButtonClick = (action, record) => {
-    console.log(`${action} clicked for record:`, record);
-    // You can add more logic here based on the action and record
+    setTorneo(record.address)
+    navigate(`/club/torneos/${action}`);
   };
 
   const dateSorter = (a, b, key) => {
@@ -214,9 +216,9 @@ const App = ( {data} ) => {
       key: 'acciones',
       render: (_, record) => (
         <Space size="middle">
-          <Button className='button-actions' onClick={() => handleButtonClick('Edit', record)} type="primary">Partidos</Button>
-          <Button className='button-actions' onClick={() => handleButtonClick('Delete', record)} type="primary">Cuadro</Button>
-          <Button className='button-actions' onClick={() => handleButtonClick('View', record)} type="primary">Equipos</Button>
+          <Button className='button-actions' onClick={() => handleButtonClick('partidos', record)} type="primary">Partidos</Button>
+          <Button className='button-actions' onClick={() => handleButtonClick('cuadro', record)} type="primary">Cuadro</Button>
+          <Button className='button-actions' onClick={() => handleButtonClick('equipos', record)} type="primary">Equipos</Button>
         </Space>
       ),
       align: 'center',
@@ -241,7 +243,7 @@ const App = ( {data} ) => {
   return (
         <Table
           columns={columns}
-          dataSource={data}
+          dataSource={torneos}
           pagination={{ position: ['bottomCenter'] }}
           className="custom-table"
         />
