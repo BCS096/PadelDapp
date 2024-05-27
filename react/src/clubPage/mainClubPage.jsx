@@ -53,9 +53,6 @@ const MainClubPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if( account === '') {
-      navigate('/home')
-    }
     console.log('account', account);
     padelDBService.getClub(account).then((club) => {
       setClub(club);

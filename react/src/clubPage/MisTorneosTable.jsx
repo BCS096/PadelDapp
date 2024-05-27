@@ -1,14 +1,12 @@
 import React, { useRef, useState } from 'react';
 import { SearchOutlined } from '@ant-design/icons';
-import { Button, Input, Space, Table, DatePicker, Tag } from 'antd';
+import { Button, Input, Space, Table, DatePicker, Tag, Checkbox } from 'antd';
 import Highlighter from 'react-highlight-words';
 import moment from 'moment';
 import './MisTorneosTable.css';
 import { useNavigate } from 'react-router-dom';
 
-
-
-const App = ( {torneos, setTorneo} ) => {
+const App = ({ torneos, setTorneo }) => {
   const navigate = useNavigate();
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
@@ -27,12 +25,7 @@ const App = ( {torneos, setTorneo} ) => {
 
   const getColumnSearchProps = (dataIndex, isDate = false) => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
-      <div
-        style={{
-          padding: 8,
-        }}
-        onKeyDown={(e) => e.stopPropagation()}
-      >
+      <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
         {isDate ? (
           <DatePicker
             ref={searchInput}
@@ -41,10 +34,7 @@ const App = ( {torneos, setTorneo} ) => {
             format="DD/MM/YYYY"
             onChange={(date, dateString) => setSelectedKeys(dateString ? [dateString] : [])}
             onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
-            style={{
-              marginBottom: 8,
-              display: 'block',
-            }}
+            style={{ marginBottom: 8, display: 'block' }}
           />
         ) : (
           <Input
@@ -53,10 +43,7 @@ const App = ( {torneos, setTorneo} ) => {
             value={selectedKeys[0]}
             onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
             onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
-            style={{
-              marginBottom: 8,
-              display: 'block',
-            }}
+            style={{ marginBottom: 8, display: 'block' }}
           />
         )}
         <Space>
@@ -65,18 +52,14 @@ const App = ( {torneos, setTorneo} ) => {
             onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
             icon={<SearchOutlined />}
             size="small"
-            style={{
-              width: 90,
-            }}
+            style={{ width: 90 }}
           >
             Search
           </Button>
           <Button
             onClick={() => clearFilters && handleReset(clearFilters)}
             size="small"
-            style={{
-              width: 90,
-            }}
+            style={{ width: 90 }}
           >
             Reset
           </Button>
@@ -84,33 +67,21 @@ const App = ( {torneos, setTorneo} ) => {
             type="link"
             size="small"
             onClick={() => {
-              confirm({
-                closeDropdown: false,
-              });
+              confirm({ closeDropdown: false });
               setSearchText(selectedKeys[0]);
               setSearchedColumn(dataIndex);
             }}
           >
             Filter
           </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              close();
-            }}
-          >
+          <Button type="link" size="small" onClick={() => close()}>
             close
           </Button>
         </Space>
       </div>
     ),
     filterIcon: (filtered) => (
-      <SearchOutlined
-        style={{
-          color: filtered ? '#fff' : undefined,
-        }}
-      />
+      <SearchOutlined style={{ color: filtered ? '#fff' : undefined }} />
     ),
     onFilter: (value, record) => {
       if (isDate) {
@@ -126,10 +97,7 @@ const App = ( {torneos, setTorneo} ) => {
     render: (text) =>
       searchedColumn === dataIndex ? (
         <Highlighter
-          highlightStyle={{
-            backgroundColor: '#ffc069',
-            padding: 0,
-          }}
+          highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
           searchWords={[searchText]}
           autoEscape
           textToHighlight={text ? text.toString() : ''}
@@ -140,7 +108,7 @@ const App = ( {torneos, setTorneo} ) => {
   });
 
   const handleButtonClick = (action, record) => {
-    setTorneo(record.address)
+    setTorneo(record.address);
     navigate(`/club/torneos/${action}`);
   };
 
@@ -149,6 +117,68 @@ const App = ( {torneos, setTorneo} ) => {
     const dateB = new Date(b[key].split('/').reverse().join('-'));
     return dateA - dateB;
   };
+
+  const getTraduction = (key) => {
+    switch (key) {
+      case 'OPENED':
+        return 'Inscripciones abiertas';
+      case 'PLAYING':
+        return 'En juego';
+      case 'CANCELED':
+        return 'Cancelado';
+      case 'FINISHED':
+        return 'Finalizado';
+      default:
+        return key;
+    }
+  };
+
+  const statusFilterDropdown = ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
+    <div style={{ padding: 8 }}>
+      <Checkbox.Group
+        options={[
+          { label: 'Inscripciones abiertas', value: 'OPENED' },
+          { label: 'En juego', value: 'PLAYING' },
+          { label: 'Cancelado', value: 'CANCELED' },
+          { label: 'Finalizado', value: 'FINISHED' },
+        ]}
+        value={selectedKeys}
+        onChange={(checkedValues) => setSelectedKeys(checkedValues)}
+        style={{ marginBottom: 8, display: 'block' }}
+      />
+      <Space>
+        <Button
+          type="primary"
+          onClick={() => handleSearch(selectedKeys, confirm, 'status')}
+          size="small"
+          style={{ width: 90 }}
+        >
+          Search
+        </Button>
+        <Button
+          onClick={() => clearFilters && handleReset(clearFilters)}
+          size="small"
+          style={{ width: 90 }}
+        >
+          Reset
+        </Button>
+        <Button
+          type="link"
+          size="small"
+          onClick={() => {
+            confirm({ closeDropdown: false });
+            setSearchText(selectedKeys[0]);
+            setSearchedColumn('status');
+          }}
+        >
+          Filter
+        </Button>
+        <Button type="link" size="small" onClick={() => close()}>
+          close
+        </Button>
+      </Space>
+    </div>
+  );
 
   const columns = [
     {
@@ -171,6 +201,8 @@ const App = ( {torneos, setTorneo} ) => {
       title: 'Estado',
       key: 'status',
       dataIndex: 'status',
+      filterDropdown: statusFilterDropdown,
+      onFilter: (value, record) => record.status.indexOf(value) === 0,
       render: (status) => {
         let color;
         switch (status) {
@@ -216,37 +248,23 @@ const App = ( {torneos, setTorneo} ) => {
       key: 'acciones',
       render: (_, record) => (
         <Space size="middle">
-          <Button className='button-actions' onClick={() => handleButtonClick('partidos', record)} type="primary">Partidos</Button>
-          <Button className='button-actions' onClick={() => handleButtonClick('cuadro', record)} type="primary">Cuadro</Button>
-          <Button className='button-actions' onClick={() => handleButtonClick('equipos', record)} type="primary">Equipos</Button>
+          <Button className="button-actions" onClick={() => handleButtonClick('partidos', record)} type="primary">
+            Partidos
+          </Button>
+          <Button className="button-actions" onClick={() => handleButtonClick('cuadro', record)} type="primary">
+            Cuadro
+          </Button>
+          <Button className="button-actions" onClick={() => handleButtonClick('equipos', record)} type="primary">
+            Equipos
+          </Button>
         </Space>
       ),
       align: 'center',
     },
   ];
 
-  const getTraduction = (key) => {
-    switch (key) {
-      case 'OPENED':
-        return 'Inscripciones abiertas';
-      case 'PLAYING':
-        return 'En juego';
-      case 'CANCELED':
-        return 'Cancelado';
-      case 'FINISHED':
-        return 'Finalizado';
-      default:
-        return key;
-    }
-  }
-
   return (
-        <Table
-          columns={columns}
-          dataSource={torneos}
-          pagination={{ position: ['bottomCenter'] }}
-          className="custom-table"
-        />
+    <Table columns={columns} dataSource={torneos} pagination={{ position: ['bottomCenter'] }} className="custom-table" />
   );
 };
 
