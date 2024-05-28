@@ -105,7 +105,7 @@ const MainClubPage = () => {
         >
           <Routes>
             <Route path="crearTorneo" element={<CreateTorneoPage props={club} />} />
-            <Route path="torneos*" element={<MisTorneosPage />} />
+            <Route path="torneos/*" element={<MisTorneosPage />} />
             <Route path="torneos-activos" element={<TorneosActivosPage />} />
             <Route path="infoPersonal" element={<PersonalDataPage imagen={foto} setFoto={setFoto} setClubName={setClubName} pdt={pdt} club={club} />} />
             <Route path="*" element={<SalutationPage image={foto} name={clubName} />} />
