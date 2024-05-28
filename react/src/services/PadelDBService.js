@@ -142,6 +142,7 @@ export class PadelDBService {
 
   async updateTorneoStatus(address, status){
     try {
+      console.log('status', status);
       await axios.put(`${this.backendUrl}/api/torneo/${address}/status`, status);
     } catch (error) {
       console.error('Error al actualizar el estado del torneo:', error);
@@ -195,6 +196,21 @@ export class PadelDBService {
       return response.data;
     } catch (error) {
       console.error('Error al obtener los torneos activos:', error);
+      throw error;
+    }
+  }
+
+  async getNombreJugadores(equipos) {
+    try {
+      let names = new Map();
+      for (let i = 0; i < equipos.length; i++) {
+        const jugador1 = await this.getUsuario(equipos[i].jugador1);
+        const jugador2 = await this.getUsuario(equipos[i].jugador2);
+        names.set(equipos[i].id, {jugador1: jugador1.nombre, jugador2: jugador2.nombre});
+      }
+      return names;
+    } catch (error) {
+      console.error('Error al obtener los nombres de los jugadores:', error);
       throw error;
     }
   }

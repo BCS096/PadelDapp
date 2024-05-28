@@ -15,7 +15,6 @@ const MisTorneosPage = () => {
   const padelDBService = new PadelDBService();
   const { account } = useWeb3();
   const [torneos, setTorneos] = React.useState([]);
-  const [addressTorneo, setAddressTorneo] = React.useState('');
 
   useEffect(() => {
     if (account != '') {
@@ -30,9 +29,9 @@ const MisTorneosPage = () => {
 
   return (
       <Routes>
-        <Route path="partidos" element={<PartidosPage addressTorneo={addressTorneo} />} />
-        <Route path="cuadro" element={<CuadroPage addressTorneo={addressTorneo} />} />
-        <Route path="equipos" element={<EquiposPage addressTorneo={addressTorneo} />} />
+        <Route path="partidos" element={<PartidosPage />} />
+        <Route path="cuadro" element={<CuadroPage />} />
+        <Route path="equipos" element={<EquiposPage />} />
         <Route
           path="*"
           element={
@@ -56,7 +55,7 @@ const MisTorneosPage = () => {
                 </div>
                 <Divider className='divider' />
                 <div className='table-div'>
-                  <MisTorneosTable torneos={torneos} setTorneo={setAddressTorneo} />
+                  <MisTorneosTable torneos={torneos} setTorneos={setTorneos} />
                 </div>
               </div>
             </div>

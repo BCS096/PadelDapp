@@ -1,17 +1,42 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { SearchOutlined } from '@ant-design/icons';
 import { Button, Input, Space, Table, DatePicker, Tag, Checkbox } from 'antd';
 import Highlighter from 'react-highlight-words';
 import moment from 'moment';
 import './MisTorneosTable.css';
 import { useNavigate } from 'react-router-dom';
+import { useWeb3 } from '../Web3Provider';
+import TorneoJSON from '../assets/contracts/Torneo.json';
+import { TorneoService } from '../services/TorneoService';
+import { PadelDBService } from '../services/PadelDBService';
 
-const App = ({ torneos, setTorneo }) => {
+const App = ({ torneos, setTorneos }) => {
   const navigate = useNavigate();
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef(null);
+  const { web3, account } = useWeb3();
+  const [torneoService, setTorneoService] = useState(null);
+  const [iniciar, setIniciar] = useState("");
+  const padelDBService = new PadelDBService();
 
+  useEffect(() => {
+    if (torneoService && iniciar != "") {
+      torneoService.cerrarInscripciones(account).then(() => {
+        setIniciar(false);
+        setTorneoService(null);
+        padelDBService.updateTorneoStatus(iniciar, {status: 'PLAYING'}).then(() => {
+          padelDBService.getTorneosByOwner(account).then((torneos) => {
+            torneos.forEach((torneo) => {
+              torneo.key = torneo.address;
+            });
+            setTorneos(torneos);
+          });
+        });
+      });
+    }
+  }, [torneoService, iniciar, account]);
+ 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);
@@ -107,9 +132,16 @@ const App = ({ torneos, setTorneo }) => {
       ),
   });
 
-  const handleButtonClick = (action, record) => {
-    setTorneo(record.address);
-    navigate(`/club/torneos/${action}`);
+  const handleButtonClick = async (action, record) => {
+    if (action === 'initTorneo' && web3) {
+      const torneoContract = new web3.eth.Contract(TorneoJSON.abi, record.address);
+      setTorneoService(new TorneoService(torneoContract));
+      setIniciar(record.address);
+    } else {
+      localStorage.setItem('nombreTorneo', record.nombre);
+      localStorage.setItem('addressTorneo', record.address);
+      navigate(`/club/torneos/${action}`);
+    }
   };
 
   const dateSorter = (a, b, key) => {
@@ -248,16 +280,25 @@ const App = ({ torneos, setTorneo }) => {
       key: 'acciones',
       render: (_, record) => (
         <Space size="middle">
-          <Button className="button-actions" onClick={() => handleButtonClick('partidos', record)} type="primary">
-            Partidos
+        {(record.status !== 'CANCELED' && record.status !== 'OPENED') && (
+          <>
+            <Button className="button-actions" onClick={() => handleButtonClick('partidos', record)} type="primary">
+              Partidos
+            </Button>
+            <Button className="button-actions" onClick={() => handleButtonClick('cuadro', record)} type="primary">
+              Cuadro
+            </Button>
+          </>
+        )}
+        {(record.status === 'OPENED') && (
+          <Button className="button-actions" onClick={() => handleButtonClick('initTorneo', record)} type="primary">
+            Iniciar torneo
           </Button>
-          <Button className="button-actions" onClick={() => handleButtonClick('cuadro', record)} type="primary">
-            Cuadro
-          </Button>
-          <Button className="button-actions" onClick={() => handleButtonClick('equipos', record)} type="primary">
-            Equipos
-          </Button>
-        </Space>
+        )}
+        <Button className="button-actions" onClick={() => handleButtonClick('equipos', record)} type="primary">
+          Equipos
+        </Button>
+      </Space>
       ),
       align: 'center',
     },

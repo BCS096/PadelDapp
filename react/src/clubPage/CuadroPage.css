@@ -1,0 +1,52 @@
+canvas {
+    display: block;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  #scrollDiv {
+    width: 700px;
+    height: 500px;
+    overflow: auto;
+  }
+  
+  /* Estilos para personalizar los scrollbars */
+  /* WebKit (Chrome, Safari) */
+  #scrollDiv::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+  
+  #scrollDiv::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  #scrollDiv::-webkit-scrollbar-thumb {
+    background: #0000FF;
+    border-radius: 6px;
+  }
+  
+  #scrollDiv::-webkit-scrollbar-thumb:hover {
+    background: #0000AA;
+  }
+  
+  /* Firefox */
+  #scrollDiv {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(0, 33, 64) #f1f1f1;
+  }
+  
+  .cuadro-div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .vertical-divider-cuadro {
+    height: 80%;
+    border-left: 3px solid ;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    color: rgb(0, 33, 64);
+  }

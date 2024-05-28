@@ -21,7 +21,11 @@ export class TorneoService {
     }
 
     async cerrarInscripciones(owner) {
-        return await this.contratoTorneo.methods.cerrarInscripciones().send({from: owner,  gas: '6721975'});
+        try {
+            return await this.contratoTorneo.methods.cerrarInscripciones().send({from: owner,  gas: '6721975'});
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     async getPartidas() {
