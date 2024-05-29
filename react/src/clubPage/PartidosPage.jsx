@@ -52,11 +52,15 @@ function buildPartidasPorRonda(partidos, equipos) {
     const equipo2 = equipos.get(partido.partida.equipo2Id);
     partida.equipo1 = {
       jugador1: equipo1 ? equipo1.jugador1 : "",
+      jugador1Id: equipo1 ? equipo1.jugador1Id : "",
       jugador2: equipo1 ? equipo1.jugador2 : "",
+      jugador2Id: equipo1 ? equipo1.jugador2Id : ""
     }
     partida.equipo2 = {
       jugador1: equipo2 ? equipo2.jugador1 : "",
-      jugador2: equipo2 ? equipo2.jugador2 : ""
+      jugador1Id: equipo2 ? equipo2.jugador1Id : "",
+      jugador2: equipo2 ? equipo2.jugador2 : "",
+      jugador2Id: equipo2 ? equipo2.jugador2Id : ""
     }
     partidasPorRonda.get(partido.partida.ronda).push(partida);
     i++;

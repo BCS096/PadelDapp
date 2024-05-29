@@ -206,11 +206,34 @@ export class PadelDBService {
       for (let i = 0; i < equipos.length; i++) {
         const jugador1 = await this.getUsuario(equipos[i].jugador1);
         const jugador2 = await this.getUsuario(equipos[i].jugador2);
-        names.set(equipos[i].id, {jugador1: jugador1.nombre, jugador2: jugador2.nombre});
+        names.set(equipos[i].id, {
+          jugador1: jugador1.nombre,
+          jugador1Id: equipos[i].jugador1,
+          jugador2: jugador2.nombre,
+          jugador2Id: equipos[i].jugador2
+        });
       }
       return names;
     } catch (error) {
       console.error('Error al obtener los nombres de los jugadores:', error);
+      throw error;
+    }
+  }
+
+  async getEmailJugadores(partida) {
+    try {
+      let emails = [];
+      const jugador1 = await this.getUsuario(partida.equipo1.jugador1Id);
+      const jugador2 = await this.getUsuario(partida.equipo1.jugador2Id);
+      const jugador3 = await this.getUsuario(partida.equipo2.jugador1Id);
+      const jugador4 = await this.getUsuario(partida.equipo2.jugador2Id);
+      emails.push({email: jugador1.email, nombre: jugador1.nombre});
+      emails.push({email: jugador2.email, nombre: jugador2.nombre});
+      emails.push( {email: jugador3.email, nombre: jugador3.nombre});
+      emails.push({email: jugador4.email, nombre: jugador4.nombre});
+      return emails;
+    } catch (error) {
+      console.error('Error al obtener los emails de los jugadores:', error);
       throw error;
     }
   }

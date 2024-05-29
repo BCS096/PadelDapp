@@ -112,7 +112,7 @@ export class PadelTokenService {
     }
 }
 
-const contratoTorneoAddress = '0x64550e19b5d9DE37e7063406307426c767DD2D47';
+const contratoTorneoAddress = '0x35B457523E7D03632fb179eE2db849097c180de1';
 const contratoTorneoABI = [
   {
     "inputs": [
@@ -553,19 +553,16 @@ const contractTorneo = new web3.eth.Contract(contratoTorneoABI, contratoTorneoAd
 const torneo = new TorneoService(contractTorneo);
 
 
-
-//contractTorneo.methods.addEquipo('0x40E4b12F4EC01D96148c0beC096bFC649d93DD88', '0x21de375EC55729ac0caA8bC7965A4252a5389206').send({from: '0x40E4b12F4EC01D96148c0beC096bFC649d93DD88', gas: 6721975});
-//contractTorneo.methods.addEquipo('0xdF87A7D6c4b7e7d0e8B4E70dEd84c3Fa0c018165', '0x0215eDc0e5774437d5CCCb68bdDdb63c329Db75B').send({from: '0x40E4b12F4EC01D96148c0beC096bFC649d93DD88', gas: 6721975});
-//contractTorneo.methods.addEquipo('0x202694b8F0a7c890549534B4065E1F209612B32A', '0x507D7A5905460903A2dd88E79251a769755C8879').send({from: '0x40E4b12F4EC01D96148c0beC096bFC649d93DD88', gas: 6721975});
-//contractTorneo.methods.addEquipo('0xf84a7fF9EEc7cA4b7003ac99F0e7775Ea361c249', '0x24F9b5a49E81879BcC50C91133C18bf7C025DCFC').send({from: '0x40E4b12F4EC01D96148c0beC096bFC649d93DD88', gas: 6721975});
-//contractTorneo.methods.addEquipo('0x248b513a9945391283112cE6dE12F89482B8a2Ff', '0xc22678A618a3ba3b3E996025C32FC24A6EFA3800').send({from: '0x40E4b12F4EC01D96148c0beC096bFC649d93DD88', gas: 6721975});
+contractTorneo.methods.addEquipo('0x40E4b12F4EC01D96148c0beC096bFC649d93DD88', '0x21de375EC55729ac0caA8bC7965A4252a5389206').send({from: '0x40E4b12F4EC01D96148c0beC096bFC649d93DD88', gas: 6721975});
+contractTorneo.methods.addEquipo('0xdF87A7D6c4b7e7d0e8B4E70dEd84c3Fa0c018165', '0x0215eDc0e5774437d5CCCb68bdDdb63c329Db75B').send({from: '0x40E4b12F4EC01D96148c0beC096bFC649d93DD88', gas: 6721975});
+contractTorneo.methods.addEquipo('0x202694b8F0a7c890549534B4065E1F209612B32A', '0x507D7A5905460903A2dd88E79251a769755C8879').send({from: '0x40E4b12F4EC01D96148c0beC096bFC649d93DD88', gas: 6721975});
+contractTorneo.methods.addEquipo('0xf84a7fF9EEc7cA4b7003ac99F0e7775Ea361c249', '0x24F9b5a49E81879BcC50C91133C18bf7C025DCFC').send({from: '0x40E4b12F4EC01D96148c0beC096bFC649d93DD88', gas: 6721975});
+contractTorneo.methods.addEquipo('0x248b513a9945391283112cE6dE12F89482B8a2Ff', '0xc22678A618a3ba3b3E996025C32FC24A6EFA3800').send({from: '0x40E4b12F4EC01D96148c0beC096bFC649d93DD88', gas: 6721975});
 
 
 //torneo.getPartidas().then(console.log);
 
 //contractTorneo.methods.getPartidas().call().then(console.log);
-
-torneo.setResultado(1, 1, '6-2 6-1', '0x40E4b12F4EC01D96148c0beC096bFC649d93DD88').then(console.log);
 
 
 //torneo.cerrarInscripciones('0x40E4b12F4EC01D96148c0beC096bFC649d93DD88').then(console.log);

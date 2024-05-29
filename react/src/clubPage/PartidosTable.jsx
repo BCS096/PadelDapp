@@ -5,6 +5,8 @@ import { useWeb3 } from '../Web3Provider';
 import { TorneoService } from '../services/TorneoService';
 import TorneoJSON from '../assets/contracts/Torneo.json';
 import { PadelDBService } from '../services/PadelDBService';
+import { DatePicker } from 'antd';
+import { MailService } from '../services/MailService';
 
 const getColorEquipo1 = (ganador) => {
   return ganador == 1 ? 'green' : ganador == 2 ? 'red' : 'black';
@@ -32,13 +34,18 @@ const tailLayout = {
 
 const App = ({ datos }) => {
   const [nuevoResultado, setNuevoResultado] = useState(false);
+  const [nuevoHorario, setNuevoHorario] = useState(false);
   const [partida, setPartida] = useState({});
   const [form] = Form.useForm();
+  const [formHorario] = Form.useForm();
   const { web3, account } = useWeb3();
   const [torneoService, setTorneoService] = useState(null);
   const [añadirResultado, setAñadirResultado] = useState(false);
+  const [añadirHorario, setAñadirHorario] = useState(false);
   const [resultado, setResultado] = useState({});
+  const [horario, setHorario] = useState({});
   const padelDBService = new PadelDBService();
+  const mailService = new MailService();
 
   useEffect(() => {
     if (torneoService && añadirResultado && resultado) {
@@ -50,10 +57,26 @@ const App = ({ datos }) => {
         datos[buscarPartida(resultado.idPartida)].ganador = resultado.ganador;
       });
       if (datos[0].ronda == "Final") {
-        padelDBService.updateTorneoStatus(localStorage.getItem('addressTorneo'), {status: 'FINISHED'});
+        padelDBService.updateTorneoStatus(localStorage.getItem('addressTorneo'), { status: 'FINISHED' });
       }
     }
   }, [torneoService, añadirResultado, resultado]);
+
+  useEffect(() => {
+    if (torneoService && añadirHorario && horario) {
+      torneoService.setHorario(horario.idPartida, horario.horario, account).then(() => {
+        setAñadirHorario(false);
+        setNuevoHorario(false);
+        setHorario({});
+        datos[buscarPartida(horario.idPartida)].horario = horario.horario;
+        padelDBService.getEmailJugadores(partida).then((emails) => {
+          emails.forEach((email) => {
+            mailService.sendMail(email.email, email.nombre, horario.horario);
+          });
+        });
+      });
+    }
+  }, [torneoService, añadirHorario, horario]);
 
   const buscarPartida = (idPartida) => {
     return datos.findIndex((partida) => partida.idPartida === idPartida);
@@ -61,6 +84,16 @@ const App = ({ datos }) => {
 
   const closeResultadoModal = () => {
     setNuevoResultado(false);
+  };
+
+  const closeHorarioModal = () => {
+    setNuevoHorario(false);
+  };
+
+  const newHorario = (record) => {
+    setPartida(record);
+    form.setFieldsValue({ idPartida: record.idPartida });
+    setNuevoHorario(true);
   };
 
   const newResultado = (record) => {
@@ -76,11 +109,27 @@ const App = ({ datos }) => {
       setAñadirResultado(true);
       setResultado(values);
     }
-    
+
+  };
+
+  const onFinishHorario = (values) => {
+    const formattedDateTime = values.dateTime.format('DD/MM/YYYY HH:mm');
+    const torneoContract = new web3.eth.Contract(TorneoJSON.abi, localStorage.getItem('addressTorneo'));
+    setTorneoService(new TorneoService(torneoContract));
+    let rq = {
+      idPartida: values.idPartida,
+      horario: formattedDateTime,
+    };
+    setHorario(rq);
+    setAñadirHorario(true);
   };
 
   const onReset = () => {
     form.resetFields();
+  };
+
+  const onResetHorario = () => {
+    formHorario.resetFields();
   };
 
   const columns = [
@@ -119,8 +168,8 @@ const App = ({ datos }) => {
       key: 'horario',
       render: (_, record) => (
         <div>
-          {record.horario === "" && record.ganador === 0 ? (
-            <Button type="primary">Añadir horario</Button>
+          {record.horario == "" && record.ganador == 0 && record.equipo1.jugador2 !== "" && record.equipo2.jugador2 !== ""? (
+            <Button type="primary" onClick={() => newHorario(record)}>Añadir horario</Button>
           ) : (
             <div>{record.horario}</div>
           )}
@@ -143,7 +192,6 @@ const App = ({ datos }) => {
   ];
 
   return (
-    console.log(datos),
     <>
       <Table columns={columns} dataSource={datos} />
       {nuevoResultado && (
@@ -197,6 +245,52 @@ const App = ({ datos }) => {
                     Submit
                   </Button>
                   <Button htmlType="button" onClick={onReset}>
+                    Reset
+                  </Button>
+                </Space>
+              </Form.Item>
+              <Form.Item
+                name="idPartida"
+                initialValue={partida.idPartida}
+                hidden
+              >
+                <Input />
+              </Form.Item>
+            </Form>
+          </div>
+        </Modal>
+      )}
+
+      {nuevoHorario && (
+        <Modal open={true} footer={null} maskClosable={true} onCancel={closeHorarioModal}>
+          <div>
+            <Form
+              {...layout}
+              form={formHorario}
+              name="resultado"
+              onFinish={onFinishHorario}
+              style={{
+                maxWidth: 600,
+              }}
+            >
+              <Form.Item
+                name="dateTime"
+                label="Fecha y hora"
+                rules={[{ required: true, message: 'Selecciona el horario' }]}
+              >
+                <DatePicker showTime format="DD-MM-YYYY HH:mm:ss" />
+              </Form.Item>
+              <Form.Item
+                noStyle
+                shouldUpdate={(prevValues, currentValues) => prevValues.ganador !== currentValues.ganador}
+              >
+              </Form.Item>
+              <Form.Item {...tailLayout}>
+                <Space>
+                  <Button type="primary" htmlType="submit">
+                    Submit
+                  </Button>
+                  <Button htmlType="button" onClick={onResetHorario}>
                     Reset
                   </Button>
                 </Space>
