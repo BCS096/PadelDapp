@@ -112,7 +112,7 @@ export class PadelTokenService {
     }
 }
 
-const contratoTorneoAddress = '0x35B457523E7D03632fb179eE2db849097c180de1';
+const contratoTorneoAddress = '0x3b684E4c03997181262BdcdC3DF2D60c55eEa4D0';
 const contratoTorneoABI = [
   {
     "inputs": [
@@ -546,11 +546,438 @@ const contratoTorneoABI = [
   }
 ];
 
+const contratoPDTAddress = '0x9cCE28475A3417882D95dba489Dd8C58F0E86d47';
+
+const contratoPDTABI = [
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "name_",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "symbol_",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "decimals_",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "initialBalance_",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address payable",
+        "name": "feeReceiver_",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "payable",
+    "type": "constructor",
+    "payable": true
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "spender",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      }
+    ],
+    "name": "Approval",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      }
+    ],
+    "name": "Burn",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      }
+    ],
+    "name": "Transfer",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "spender",
+        "type": "address"
+      }
+    ],
+    "name": "allowance",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "spender",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "approve",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "balanceOf",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [],
+    "name": "decimals",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "spender",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "subtractedValue",
+        "type": "uint256"
+      }
+    ],
+    "name": "decreaseAllowance",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_address",
+        "type": "address"
+      }
+    ],
+    "name": "getAllowSell",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "spender",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "addedValue",
+        "type": "uint256"
+      }
+    ],
+    "name": "increaseAllowance",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "name",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "num",
+        "type": "uint256"
+      }
+    ],
+    "name": "setAllowSell",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "symbol",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [],
+    "name": "totalSupply",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "vendedor",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "transfer",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "payable",
+    "type": "function",
+    "payable": true
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "sender",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "recipient",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "transferFrom",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "jugador2",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "contratoTorneo",
+        "type": "address"
+      }
+    ],
+    "name": "pagarInscripcion",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "recompensaRegistro",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "creadorTorneo",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "jugador1",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "jugador2",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "porcentajeJugadores",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "porcentajeClub",
+        "type": "uint256"
+      }
+    ],
+    "name": "recompensaTorneo",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+];
+
 const web3 = new Web3("http://localhost:7545");
 
 const contractTorneo = new web3.eth.Contract(contratoTorneoABI, contratoTorneoAddress);
+const contractPDT = new web3.eth.Contract(contratoPDTABI, contratoPDTAddress);
 
 const torneo = new TorneoService(contractTorneo);
+
+const pdt = new PadelTokenService(contractPDT);
 
 
 contractTorneo.methods.addEquipo('0x40E4b12F4EC01D96148c0beC096bFC649d93DD88', '0x21de375EC55729ac0caA8bC7965A4252a5389206').send({from: '0x40E4b12F4EC01D96148c0beC096bFC649d93DD88', gas: 6721975});
@@ -566,4 +993,12 @@ contractTorneo.methods.addEquipo('0x248b513a9945391283112cE6dE12F89482B8a2Ff', '
 
 
 //torneo.cerrarInscripciones('0x40E4b12F4EC01D96148c0beC096bFC649d93DD88').then(console.log);
+
+
+
+//pdt.transfer('0x202694b8F0a7c890549534B4065E1F209612B32A', '0xc22678A618a3ba3b3E996025C32FC24A6EFA3800', 5).then(console.log);
+//pdt.transfer('0x507D7A5905460903A2dd88E79251a769755C8879', '0xc22678A618a3ba3b3E996025C32FC24A6EFA3800', 5).then(console.log);
+
+//pdt.pagarInscripcion('0x0215eDc0e5774437d5CCCb68bdDdb63c329Db75B', '0x248b513a9945391283112cE6dE12F89482B8a2Ff', '0xc7a64838108F80B9bE579eB574f5CfB2Fb255457').then(console.log);
+//pdt.pagarInscripcion('0xf84a7fF9EEc7cA4b7003ac99F0e7775Ea361c249', '0x202694b8F0a7c890549534B4065E1F209612B32A', '0xc7a64838108F80B9bE579eB574f5CfB2Fb255457').then(console.log);
 

@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { Tabs } from 'antd';
-import  PartidosTable  from './PartidosTable';
+import PartidosTable from './PartidosTable';
 import { useWeb3 } from '../Web3Provider';
 import { TorneoService } from '../services/TorneoService';
 import TorneoJSON from '../assets/contracts/Torneo.json';
 import { PadelDBService } from '../services/PadelDBService';
+import './PartidosPage.css';
+import { Divider } from 'antd';
 
 const onChange = (key) => {
   console.log(key);
@@ -87,11 +89,11 @@ const TorneosActivosPage = () => {
       const torneoContract = new web3.eth.Contract(TorneoJSON.abi, addressTorneo);
       const torneoService = new TorneoService(torneoContract);
       torneoService.getPartidas().then((partidos) => {
-        setRondas(calcularRondas(partidos.length));
         torneoService.getEquipos().then((equipos) => {
+          setRondas(calcularRondas(equipos.length));
           let rq = [];
           equipos.forEach((equipo) => {
-            rq.push({id: equipo.equipoId, jugador1: equipo.jugador1, jugador2: equipo.jugador2});
+            rq.push({ id: equipo.equipoId, jugador1: equipo.jugador1, jugador2: equipo.jugador2 });
           });
           padelDBService.getNombreJugadores(rq).then((nombres) => {
             const partidasPorRonda = buildPartidasPorRonda(partidos, nombres);
@@ -103,23 +105,37 @@ const TorneosActivosPage = () => {
       });
     }
   }
-  , [addressTorneo, web3]);
+    , [addressTorneo, web3]);
 
   const items = new Array(rondas).fill(null).map((_, i) => {
     return {
       label: nombreRonda(i),
       key: i,
-      children: <PartidosTable datos={partidos.get(nombreRonda(i))}/>,
+      children: <PartidosTable datos={partidos.get(nombreRonda(i))} />,
     };
   }).reverse();
 
   return (
-    <Tabs
-      onChange={onChange}
-      type="card"
-      items={items}
-      defaultActiveKey={0}
-    />
+    <div className='partidos-div'>
+      <div className="titulo-partidos">
+        <h1 className="title">
+          Partidas de 
+          <br />
+          {localStorage.getItem("nombreTorneo")} 
+          </h1>
+      </div>
+      <div className="titulo-partidos" style={{ margin: '8%' }}>
+      <Divider type="vertical" className="vertical-divider-partidos" />
+      </div>
+      <div className='table-partidos-div'>
+        <Tabs
+          onChange={onChange}
+          type="card"
+          items={items}
+          defaultActiveKey={0}
+        />
+      </div>
+    </div>
 
   );
 };

@@ -7,6 +7,7 @@ import TorneoJSON from '../assets/contracts/Torneo.json';
 import { PadelDBService } from '../services/PadelDBService';
 import { DatePicker } from 'antd';
 import { MailService } from '../services/MailService';
+import './PartidosTable.css';
 
 const getColorEquipo1 = (ganador) => {
   return ganador == 1 ? 'green' : ganador == 2 ? 'red' : 'black';
@@ -193,7 +194,7 @@ const App = ({ datos }) => {
 
   return (
     <>
-      <Table columns={columns} dataSource={datos} />
+      <Table columns={columns} dataSource={datos} className='partidos-table' />
       {nuevoResultado && (
         <Modal open={true} footer={null} maskClosable={true} onCancel={closeResultadoModal}>
           <div>

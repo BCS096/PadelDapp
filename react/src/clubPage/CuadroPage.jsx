@@ -93,7 +93,7 @@ const TorneoCanvas = () => {
       torneoService.getEquipos().then((equipos) => {
         let rq = [];
         equipos.forEach((equipo) => {
-          rq.push({id: equipo.equipoId, jugador1: equipo.jugador1, jugador2: equipo.jugador2});
+          rq.push({ id: equipo.equipoId, jugador1: equipo.jugador1, jugador2: equipo.jugador2 });
         });
         padelDBService.getNombreJugadores(rq).then((nombres) => {
           setnombres(nombres);
@@ -157,19 +157,19 @@ const TorneoCanvas = () => {
 
   return (
     <>
-    <div className="header-container" style={{margin: '8%'}}>
+      <div className="titulo" style={{ margin: '8%' }}>
         <h1 className="title">Cuadro de {nombreTorneo}</h1>
       </div>
       <Divider type="vertical" className="vertical-divider-cuadro" />
-    <div id="scrollDiv" className='cuadro-div' style={{margin: '8%'}}>
-      <canvas
-        ref={canvasRef}
-        id="torneoCanvas"
-        width={setWidth(calcularRondas(equipos.length))}
-        height={setHeight(calcularRondas(equipos.length))}
-      >
-      </canvas>
-    </div>
+      <div id="scrollDiv" className='cuadro-div' style={{ margin: '8%' }}>
+        <canvas
+          ref={canvasRef}
+          id="torneoCanvas"
+          width={setWidth(calcularRondas(equipos.length))}
+          height={setHeight(calcularRondas(equipos.length))}
+        >
+        </canvas>
+      </div>
     </>
   );
 }

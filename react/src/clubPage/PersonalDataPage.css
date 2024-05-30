@@ -1,9 +1,8 @@
 
 .split-screen {
     display: flex;
-    flex-direction: row; /* Puedes cambiarlo a column si quieres que los divs estén uno debajo del otro */
-    width: 100%;
-    height: 100%; /* Ajusta según tus necesidades */
+    flex-direction: row; 
+    height: 100%;
   }
   
   .left-pane {
@@ -11,8 +10,7 @@
     justify-content: center;
     align-items: center;
     font-size: 24px;
-    flex: 1 1 auto; /* flex-grow: 1; flex-shrink: 1; flex-basis: auto; */
-    /* Opcional: agrega estilo adicional a los divs hijos */
+    flex: 1 1 auto; 
     padding: 10px;
     box-sizing: border-box
   }
@@ -23,8 +21,7 @@
     flex-direction: column;
     align-items: center;
     font-size: 24px;
-    flex: 1 1 auto; /* flex-grow: 1; flex-shrink: 1; flex-basis: auto; */
-    /* Opcional: agrega estilo adicional a los divs hijos */
+    flex: 1 1 auto; 
     padding: 10px;
     box-sizing: border-box
   }
@@ -89,7 +86,7 @@
 }
 
 .square-input-number .ant-input-number-input {
-  font-size: 36px !important; /* Aumenta el tamaño de la fuente */
+  font-size: 36px !important;
   text-align: center;
-  padding: 0 !important; /* Elimina el padding */
+  padding: 0 !important;
 }

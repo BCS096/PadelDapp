@@ -206,6 +206,7 @@ export class PadelDBService {
       for (let i = 0; i < equipos.length; i++) {
         const jugador1 = await this.getUsuario(equipos[i].jugador1);
         const jugador2 = await this.getUsuario(equipos[i].jugador2);
+        console.log('e',equipos)
         names.set(equipos[i].id, {
           jugador1: jugador1.nombre,
           jugador1Id: equipos[i].jugador1,

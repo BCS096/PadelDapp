@@ -3,7 +3,6 @@ import { Link, Routes, Route } from 'react-router-dom';
 import { Col, Layout, Menu, Row, theme } from 'antd';
 import CreateTorneoPage from './CreateTorneoPage';
 import MisTorneosPage from './MisTorneosPage';
-import TorneosActivosPage from './TorneosActivosPage';
 import PersonalDataPage from './PersonalDataPage';
 import { GiTennisBall } from "react-icons/gi";
 import MainImage from './MainImage';
@@ -28,11 +27,10 @@ function getItem(label, key, icon, to) {
 const items = [
   getItem('Crear Torneo', '1', <GiTennisBall />, 'crearTorneo'),
   getItem('Mis Torneos', '2', <GiTennisBall />, 'torneos'),
-  getItem('Torneos activos', '3', <GiTennisBall />, 'torneos-activos'),
-  getItem('Datos de contacto', '4', <GiTennisBall />, 'infoPersonal'),
+  getItem('Datos de contacto', '3', <GiTennisBall />, 'infoPersonal'),
 ];
 
-const PDT_CONTRACT = "0x8F9991eEAF9Be7EC2FD410dFF0F6094f51347531";
+const PDT_CONTRACT = "0x9cCE28475A3417882D95dba489Dd8C58F0E86d47";
 
 const MainClubPage = () => {
   
@@ -106,7 +104,6 @@ const MainClubPage = () => {
           <Routes>
             <Route path="crearTorneo" element={<CreateTorneoPage props={club} />} />
             <Route path="torneos/*" element={<MisTorneosPage />} />
-            <Route path="torneos-activos" element={<TorneosActivosPage />} />
             <Route path="infoPersonal" element={<PersonalDataPage imagen={foto} setFoto={setFoto} setClubName={setClubName} pdt={pdt} club={club} />} />
             <Route path="*" element={<SalutationPage image={foto} name={clubName} />} />
           </Routes>

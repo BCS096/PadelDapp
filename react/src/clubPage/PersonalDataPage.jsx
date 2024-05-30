@@ -11,7 +11,7 @@ import { useWeb3 } from '../Web3Provider';
 import { PadelTokenService } from '../services/PadelTokenService';
 import PadelTokenJSON from '../assets/contracts/PadelToken.json';
 
-const PDT_CONTRACT = "0x8F9991eEAF9Be7EC2FD410dFF0F6094f51347531";
+const PDT_CONTRACT = "0x9cCE28475A3417882D95dba489Dd8C58F0E86d47";
 
 const PersonalDataPage = ({ pdt, club, imagen, setFoto, setClubName }) => {
   const [form] = Form.useForm();
