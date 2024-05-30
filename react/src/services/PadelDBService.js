@@ -239,4 +239,15 @@ export class PadelDBService {
     }
   }
 
+  async getJugadoresByAddress(addresses) {
+    try {
+      console.log('addresses', addresses);
+      const res = await axios.post(`${this.backendUrl}/api/usuarios`, addresses);
+      return res.data;
+    } catch (error) {
+      console.error('Error al obtener los jugadores por dirección:', error);
+      throw error;
+    }
+  }
+
 }

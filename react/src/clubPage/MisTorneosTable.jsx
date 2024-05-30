@@ -305,7 +305,7 @@ const App = ({ torneos, setTorneos }) => {
   ];
 
   return (
-    <Table columns={columns} dataSource={torneos} pagination={{ position: ['bottomCenter'] }} className="custom-table" />
+    <Table columns={columns} dataSource={torneos} pagination={{ position: ['bottomCenter'], pageSize: 5  }} className="custom-table" />
   );
 };
 

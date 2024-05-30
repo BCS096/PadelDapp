@@ -194,7 +194,7 @@ const App = ({ datos }) => {
 
   return (
     <>
-      <Table columns={columns} dataSource={datos} className='partidos-table' />
+      <Table columns={columns} dataSource={datos} className='partidos-table' pagination={{ pageSize: 6 }} />
       {nuevoResultado && (
         <Modal open={true} footer={null} maskClosable={true} onCancel={closeResultadoModal}>
           <div>

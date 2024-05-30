@@ -400,6 +400,19 @@ app.get('/api/usuario/:address', (req, res) => {
     });
 });
 
+//getUsuariosByAddresses
+app.post('/api/usuarios', (req, res) => {
+    const addresses = req.body;
+    connection.query('SELECT * FROM jugador WHERE address IN (?)', [addresses], (err, results) => {
+        if (err) {
+            console.error('Error al ejecutar la consulta:', err);
+            res.status(500).json({ error: 'Error interno del servidor' });
+            return;
+        }
+        res.json(results);
+    });
+});
+
 //getUsuariosByTorneo
 app.get('/api/usuario/torneo/:address', (req, res) => {
     const address = req.params.address;
