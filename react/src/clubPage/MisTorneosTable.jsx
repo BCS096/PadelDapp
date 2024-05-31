@@ -295,8 +295,8 @@ const App = ({ torneos, setTorneos }) => {
             Iniciar torneo
           </Button>
         )}
-        <Button className="button-actions" onClick={() => handleButtonClick('equipos', record)} type="primary">
-          Equipos
+        <Button className="button-actions" onClick={() => handleButtonClick('jugadores', record)} type="primary">
+          Jugadores
         </Button>
       </Space>
       ),

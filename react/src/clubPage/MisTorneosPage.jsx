@@ -31,7 +31,7 @@ const MisTorneosPage = () => {
       <Routes>
         <Route path="partidos" element={<PartidosPage />} />
         <Route path="cuadro" element={<CuadroPage />} />
-        <Route path="equipos" element={<EquiposPage />} />
+        <Route path="jugadores" element={<EquiposPage />} />
         <Route
           path="*"
           element={

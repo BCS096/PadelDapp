@@ -4,6 +4,8 @@ import { TorneoService } from '../services/TorneoService';
 import TorneoJSON from '../assets/contracts/Torneo.json';
 import { PadelDBService } from '../services/PadelDBService';
 import EquiposTable from './EquiposTable';
+import './EquiposPage.css';
+import { Divider } from 'antd';
 
 const App = () => {
 
@@ -34,11 +36,11 @@ const App = () => {
             let i = 0;
             usuarios.forEach((usuario) => {
               usuario.key = i++;
-              usuario.equipo = map.get(usuario.address); 
+              usuario.equipo = map.get(usuario.address);
             });
             setDatos(usuarios);
           });
-          
+
         });
 
       }
@@ -47,6 +49,23 @@ const App = () => {
 
   }, [addressTorneo, web3]);
 
-  return <EquiposTable equipos={datos} />;
+  return (
+    <div className='equipos-div'>
+      <div className="titulo-equipos">
+        <h1 className="title">
+          Jugadores de
+          <br />
+          {localStorage.getItem("nombreTorneo")}
+        </h1>
+      </div>
+      <div className="titulo-equipos" style={{ margin: '8%' }}>
+        <Divider type="vertical" className="vertical-divider-equipos" />
+      </div>
+      <div className='table-equipos-div'>
+        <EquiposTable equipos={datos} />
+      </div>
+    </div>
+
+  );
 };
 export default App;

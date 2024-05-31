@@ -2,6 +2,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import React, { useEffect, useRef, useState } from 'react';
 import { Button, Input, Space, Table } from 'antd';
 import Highlighter from 'react-highlight-words';
+import './EquiposTable.css';
 
 const EquiposTable = ({ equipos }) => {
     const [searchText, setSearchText] = useState('');
@@ -136,13 +137,14 @@ const EquiposTable = ({ equipos }) => {
             title: 'Telefono',
             dataIndex: 'telefono',
             key: 'telefono',
-            width: '20%',
+            width: '30%',
             ...getColumnSearchProps('telefono'),
         },
         {
             title: 'Equipo',
             dataIndex: 'equipo',
             key: 'equipo',
+            width: '10%',
             ...getColumnSearchProps('equipo'),
             sorter: (a, b) => a.equipo - b.equipo,
             sortDirections: ['descend', 'ascend'],
@@ -150,7 +152,7 @@ const EquiposTable = ({ equipos }) => {
     ];
 
     return (
-    <Table columns={columns} dataSource={equipos}  pagination={{ pageSize: 5 }} />
+    <Table columns={columns} dataSource={equipos}  pagination={{ pageSize: 7 }} className='equipos-table' />
 );
 }
 
