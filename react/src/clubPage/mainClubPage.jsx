@@ -46,9 +46,9 @@ const MainClubPage = () => {
   const [padelTokenService, setPadelTokenService] = useState(null);
   const [pdt, setPdt] = useState(0);
   const [club, setClub] = useState({});
+  const [clubDireccion, setClubDireccion] = useState('');
 
   const padelDBService = new PadelDBService();
-  const navigate = useNavigate();
 
   useEffect(() => {
     console.log('account', account);
@@ -56,6 +56,7 @@ const MainClubPage = () => {
       setClub(club);
       setFoto(club.foto);
       setClubName(club.nom);
+      setClubDireccion(club.direccio);
     });
   }, [account]);
 
@@ -105,7 +106,7 @@ const MainClubPage = () => {
             <Route path="crearTorneo" element={<CreateTorneoPage props={club} />} />
             <Route path="torneos/*" element={<MisTorneosPage />} />
             <Route path="infoPersonal" element={<PersonalDataPage imagen={foto} setFoto={setFoto} setClubName={setClubName} pdt={pdt} club={club} />} />
-            <Route path="*" element={<SalutationPage image={foto} name={clubName} />} />
+            <Route path="*" element={<SalutationPage image={foto} name={clubName} direccion={clubDireccion}/>} />
           </Routes>
         </Content>
       </Layout>
