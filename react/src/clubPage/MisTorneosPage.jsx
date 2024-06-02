@@ -1,4 +1,3 @@
-// Option2Content.js
 import React, { useEffect } from 'react';
 import MisTorneosTable from './MisTorneosTable';
 import { PadelDBService } from '../services/PadelDBService';

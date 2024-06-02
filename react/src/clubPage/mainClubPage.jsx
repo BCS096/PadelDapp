@@ -9,7 +9,6 @@ import MainImage from './MainImage';
 import { useWeb3 } from '../Web3Provider';
 import { PadelDBService } from '../services/PadelDBService';
 import { PadelTokenService } from '../services/PadelTokenService';
-import { useNavigate } from 'react-router-dom';
 import PadelTokenJSON from '../assets/contracts/PadelToken.json'
 import SalutationPage from './SalutationPage';
 

@@ -27,10 +27,10 @@ const App = () => {
         const torneoService = new TorneoService(torneoContract);
         torneoService.getEquipos().then((equipos) => {
           equipos.forEach((equipo) => {
-            equiposList.push(equipo.jugador1);
-            equiposList.push(equipo.jugador2);
-            map.set(equipo.jugador1, equipo.equipoId);
-            map.set(equipo.jugador2, equipo.equipoId);
+            equiposList.push(equipo.jugador1.toLowerCase());
+            equiposList.push(equipo.jugador2.toLowerCase());
+            map.set(equipo.jugador1.toLowerCase(), equipo.equipoId);
+            map.set(equipo.jugador2.toLowerCase(), equipo.equipoId);
           });
           padelDBService.getJugadoresByAddress(equiposList).then((usuarios) => {
             let i = 0;

@@ -152,8 +152,10 @@ const EquiposTable = ({ equipos }) => {
     ];
 
     return (
-    <Table columns={columns} dataSource={equipos}  pagination={{ pageSize: 7 }} className='equipos-table' />
-);
+        <>
+            <Table columns={columns} dataSource={equipos} pagination={{ pageSize: 7 }} className='equipos-table' />
+        </>
+    );
 }
 
 export default EquiposTable;

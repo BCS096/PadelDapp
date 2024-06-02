@@ -18,7 +18,7 @@ function App() {
   const [infoModal, setInfoModal] = useState(false);
   const { initializeWeb3, web3, account, setWeb3, setAccount } = useWeb3();
   const [isNuevoUsuario, setIsNuevoUsuario] = useState(null);
-  const [redirect, setRedirect] = useState(false); 
+  const [redirect, setRedirect] = useState(false);
   const [newJugador, setNewJugador] = useState(null);
   const padelDBService = new PadelDBService();
   const navigate = useNavigate();

@@ -30,19 +30,19 @@ export class PadelDBService {
     const formData = new FormData();
     formData.append('imagen', values.imagen);
     try {
-        const response = await axios.post(`${this.backendUrl}/upload`, formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data', 
-            }
-        });
-        values.imagen = response.data.filename;
-        await axios.post(`${this.backendUrl}/api/club`, values);
+      const response = await axios.post(`${this.backendUrl}/upload`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        }
+      });
+      values.imagen = response.data.filename;
+      await axios.post(`${this.backendUrl}/api/club`, values);
 
 
     } catch (error) {
-        console.error('Error al cargar la imagen:', error);
+      console.error('Error al cargar la imagen:', error);
     }
- }
+  }
 
   async actualizarImagenClub(address, imagen) {
     const formData = new FormData();
@@ -50,12 +50,12 @@ export class PadelDBService {
     try {
       const response = await axios.post(`${this.backendUrl}/upload`, formData, {
         headers: {
-          'Content-Type': 'multipart/form-data', 
+          'Content-Type': 'multipart/form-data',
         }
-    });
-    imagen = response.data.filename;
-    await this.updateClub(address, { imagen });
-    return "http://localhost:3000/images/" + imagen;
+      });
+      imagen = response.data.filename;
+      await this.updateClub(address, { imagen });
+      return "http://localhost:3000/images/" + imagen;
     } catch (error) {
       console.error('Error al actualizar la imagen del club:', error);
       throw error;
@@ -140,7 +140,7 @@ export class PadelDBService {
     }
   }
 
-  async updateTorneoStatus(address, status){
+  async updateTorneoStatus(address, status) {
     try {
       console.log('status', status);
       await axios.put(`${this.backendUrl}/api/torneo/${address}/status`, status);
@@ -150,7 +150,7 @@ export class PadelDBService {
     }
   }
 
-  async getTorneosByOwner(ownerAddress){
+  async getTorneosByOwner(ownerAddress) {
     try {
       const response = await axios.get(`${this.backendUrl}/api/torneo/owner/${ownerAddress}`);
       return response.data;
@@ -160,7 +160,7 @@ export class PadelDBService {
     }
   }
 
-  async getTorneosByJugador(jugadorAddress){
+  async getTorneosByJugador(jugadorAddress) {
     try {
       const response = await axios.get(`${this.backendUrl}/api/torneo/jugador/${jugadorAddress}`);
       return response.data;
@@ -170,7 +170,7 @@ export class PadelDBService {
     }
   }
 
-  async getUsuario(address){
+  async getUsuario(address) {
     try {
       const response = await axios.get(`${this.backendUrl}/api/usuario/${address}`);
       return response.data;
@@ -180,7 +180,7 @@ export class PadelDBService {
     }
   }
 
-  async getUsuariosByTorneo(torneoAddress){
+  async getUsuariosByTorneo(torneoAddress) {
     try {
       const response = await axios.get(`${this.backendUrl}/api/usuario/torneo/${torneoAddress}`);
       return response.data;
@@ -190,9 +190,9 @@ export class PadelDBService {
     }
   }
 
-  async getTorneosActivos(){
+  async getTorneosActivos(jugador) {
     try {
-      const response = await axios.get(`${this.backendUrl}/api/torneo/activos`);
+      const response = await axios.get(`${this.backendUrl}/api/torneo/activos/${jugador}`);
       return response.data;
     } catch (error) {
       console.error('Error al obtener los torneos activos:', error);
@@ -206,7 +206,7 @@ export class PadelDBService {
       for (let i = 0; i < equipos.length; i++) {
         const jugador1 = await this.getUsuario(equipos[i].jugador1);
         const jugador2 = await this.getUsuario(equipos[i].jugador2);
-        console.log('e',equipos)
+        console.log('e', equipos)
         names.set(equipos[i].id, {
           jugador1: jugador1.nombre,
           jugador1Id: equipos[i].jugador1,
@@ -228,10 +228,10 @@ export class PadelDBService {
       const jugador2 = await this.getUsuario(partida.equipo1.jugador2Id);
       const jugador3 = await this.getUsuario(partida.equipo2.jugador1Id);
       const jugador4 = await this.getUsuario(partida.equipo2.jugador2Id);
-      emails.push({email: jugador1.email, nombre: jugador1.nombre});
-      emails.push({email: jugador2.email, nombre: jugador2.nombre});
-      emails.push( {email: jugador3.email, nombre: jugador3.nombre});
-      emails.push({email: jugador4.email, nombre: jugador4.nombre});
+      emails.push({ email: jugador1.email, nombre: jugador1.nombre });
+      emails.push({ email: jugador2.email, nombre: jugador2.nombre });
+      emails.push({ email: jugador3.email, nombre: jugador3.nombre });
+      emails.push({ email: jugador4.email, nombre: jugador4.nombre });
       return emails;
     } catch (error) {
       console.error('Error al obtener los emails de los jugadores:', error);
@@ -246,6 +246,16 @@ export class PadelDBService {
       return res.data;
     } catch (error) {
       console.error('Error al obtener los jugadores por dirección:', error);
+      throw error;
+    }
+  }
+
+  async getJugadores() {
+    try {
+      const response = await axios.get(`${this.backendUrl}/api/usuarios`);
+      return response.data;
+    } catch (error) {
+      console.error('Error al obtener los jugadores:', error);
       throw error;
     }
   }

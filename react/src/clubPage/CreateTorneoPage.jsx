@@ -26,7 +26,6 @@ const FormWithModal = () => {
   const { web3, account } = useWeb3();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [modal, setModal] = useState({
     visible: false,
     message: '',
