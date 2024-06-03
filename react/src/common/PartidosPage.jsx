@@ -9,6 +9,7 @@ import { PadelDBService } from '../services/PadelDBService';
 import './PartidosPage.css';
 import { Divider } from 'antd';
 
+
 const onChange = (key) => {
   console.log(key);
 };
@@ -80,6 +81,7 @@ const TorneosActivosPage = () => {
   const [rondas, setRondas] = useState(0);
   const padelDBService = new PadelDBService();
 
+
   useEffect(() => {
     setAddressTorneo(localStorage.getItem("addressTorneo"));
   }, []);
@@ -116,27 +118,28 @@ const TorneosActivosPage = () => {
   }).reverse();
 
   return (
-    <div className='partidos-div'>
-      <div className="titulo-partidos">
-        <h1 className="title">
-          Partidas de 
-          <br />
-          {localStorage.getItem("nombreTorneo")} 
+    <>
+      <div className='partidos-div'>
+        <div className="titulo-partidos">
+          <h1 className="title">
+            Partidas de
+            <br />
+            {localStorage.getItem("nombreTorneo")}
           </h1>
+        </div>
+        <div className="titulo-partidos" style={{ margin: '8%' }}>
+          <Divider type="vertical" className="vertical-divider-partidos" />
+        </div>
+        <div className='table-partidos-div'>
+          <Tabs
+            onChange={onChange}
+            type="card"
+            items={items}
+            defaultActiveKey={0}
+          />
+        </div>
       </div>
-      <div className="titulo-partidos" style={{ margin: '8%' }}>
-      <Divider type="vertical" className="vertical-divider-partidos" />
-      </div>
-      <div className='table-partidos-div'>
-        <Tabs
-          onChange={onChange}
-          type="card"
-          items={items}
-          defaultActiveKey={0}
-        />
-      </div>
-    </div>
-
+    </>
   );
 };
 

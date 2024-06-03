@@ -47,7 +47,6 @@ const MainPlayerPage = () => {
   const padelDBService = new PadelDBService();
 
   useEffect(() => {
-    console.log('account', account);
     padelDBService.getUsuario(account).then((player) => {
         setPlayerName(player.nombre);
     });
@@ -55,8 +54,6 @@ const MainPlayerPage = () => {
 
   useEffect(() => {
     if (web3 != null){ 
-      console.log('web3', web3);
-      console.log('account', account);
       const pdtContract = new web3.eth.Contract(PadelTokenJSON.abi, PDT_CONTRACT);
       setPadelTokenService(new PadelTokenService(pdtContract));
     }
@@ -96,7 +93,7 @@ const MainPlayerPage = () => {
         >
           <Routes>
             <Route path="torneos" element={<TorneosDisponibles />} />
-            <Route path="mis-torneos" element={<MisTorneos />} />
+            <Route path="mis-torneos/*" element={<MisTorneos />} />
             <Route path="info-personal" element={<InfoPersonal  />} />
             <Route path="venta-pdt" element={<VentaTokens />} />
             <Route path="*" element={<TorneosDisponibles />} />

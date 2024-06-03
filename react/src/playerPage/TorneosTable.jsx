@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { SearchOutlined } from '@ant-design/icons';
-import { Button, Input, Space, Table, DatePicker} from 'antd';
+import { Button, Input, Space, Table, DatePicker } from 'antd';
 import Highlighter from 'react-highlight-words';
 import moment from 'moment';
 import { useWeb3 } from '../Web3Provider';
@@ -49,7 +49,7 @@ const App = ({ torneos, setTorneos }) => {
   });
 
   useEffect(() => {
-    if(apuntarModalVisible) {
+    if (apuntarModalVisible) {
       padelDBService.getJugadores().then((jugadores) => {
         setOptions(jugadores);
         console.log('jugadores', jugadores);
@@ -77,13 +77,21 @@ const App = ({ torneos, setTorneos }) => {
           message: `Te has apuntado correctamente`,
           type: 'success'
         });
-        padelDBService.getTorneosActivos(account).then((torneos) => {    
+        padelDBService.getTorneosActivos(account).then((torneos) => {
           setTorneos(torneos);
         });
         form.resetFields();
       });
+    }).catch((error) => {
+      console.error('An error occurred:', error);
+      setModal({
+        visible: true,
+        message: `Error al apuntarse al torneo`,
+        description: "Puede ser debido a que no tienes suficientes tokens o tu compañero ya está apuntado",
+        type: 'error'
+      });
     });
-    };
+  };
   const onReset = () => {
     form.resetFields();
   };
@@ -322,22 +330,22 @@ const App = ({ torneos, setTorneos }) => {
         )
       }
       <Modal
-          visible={modal.visible}
-          onOk={handleCancel}
-          onCancel={handleCancel}
-          okText="Cerrar"
-          okButtonProps={{ style: { display: 'none' } }}
-          cancelButtonProps={{ style: { display: 'none' } }}
-          style={{ position: 'absolute' }}
-          className={`ant-modal-${modal.type} ant-modal-notification`}
-        >
-          <Alert
-            message={modal.message}
-            description={modal.description}
-            type={modal.type}
-            showIcon
-          />
-        </Modal>
+        visible={modal.visible}
+        onOk={handleCancel}
+        onCancel={handleCancel}
+        okText="Cerrar"
+        okButtonProps={{ style: { display: 'none' } }}
+        cancelButtonProps={{ style: { display: 'none' } }}
+        style={{ position: 'absolute' }}
+        className={`ant-modal-${modal.type} ant-modal-notification`}
+      >
+        <Alert
+          message={modal.message}
+          description={modal.description}
+          type={modal.type}
+          showIcon
+        />
+      </Modal>
     </>
   );
 };

@@ -106,6 +106,31 @@ app.get('/api/club/:address', (req, res) => {
     });
 });
 
+//get owner
+app.get('/api/torneo/:address/owner', (req, res) => {
+
+    const address = req.params.address;
+
+    connection.query('SELECT owner FROM torneo WHERE address = ?', [address], (err, results) => {
+        if (err) {
+            console.error('Error al ejecutar la consulta:', err);
+            res.status(500).json({ error: 'Error interno del servidor' });
+            return;
+        }
+        connection.query('SELECT * FROM club WHERE address = ?', [results[0].owner], (err, results) => {
+            if (err) {
+                console.error('Error al ejecutar la consulta:', err);
+                res.status(500).json({ error: 'Error interno del servidor' });
+                return;
+            }
+            for (let i = 0; i < results.length; i++) {
+                results[i].foto = 'http://localhost:3000/images/' + results[i].foto;
+            }
+            res.json(results[0]);
+        });
+    });
+});
+
 //añadir torneo
 app.post('/api/torneo', (req, res) => {
     const { address, owner, nombre, fechaInicio, fechaFinal } = req.body;
@@ -375,7 +400,7 @@ app.get('/api/torneo/owner/:owner', (req, res) => {
 });
 
 //getTorneosByJugador
-app.get('/api/torneo/player/:jugador', (req, res) => {
+app.get('/api/torneo/jugador/:jugador', (req, res) => {
     const jugador = req.params.jugador;
     connection.query('SELECT * FROM torneo WHERE address IN (SELECT addressTorneo FROM participante WHERE equipoId IN (SELECT id FROM equipo WHERE jugador1 = ? OR jugador2 = ?))', [jugador, jugador], (err, results) => {
         if (err) {

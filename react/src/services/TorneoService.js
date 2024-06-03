@@ -24,7 +24,7 @@ export class TorneoService {
         try {
             return await this.contratoTorneo.methods.cerrarInscripciones().send({from: owner,  gas: '6721975'});
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     }
 

@@ -47,6 +47,16 @@ const App = ({ datos }) => {
   const [horario, setHorario] = useState({});
   const padelDBService = new PadelDBService();
   const mailService = new MailService();
+  const [isJugador, setIsJugador] = useState(false);
+
+
+  useEffect(() => {
+    if (account != '') {
+      padelDBService.isJugador(account).then((isJugador) => {
+        setIsJugador(isJugador);
+      });
+    }
+  }, [account]);
 
   useEffect(() => {
     if (torneoService && añadirResultado && resultado) {
@@ -169,7 +179,7 @@ const App = ({ datos }) => {
       key: 'horario',
       render: (_, record) => (
         <div>
-          {record.horario == "" && record.ganador == 0 && record.equipo1.jugador2 !== "" && record.equipo2.jugador2 !== ""? (
+          {record.horario == "" && record.ganador == 0 && record.equipo1.jugador2 !== "" && record.equipo2.jugador2 !== "" && isJugador == false ? (
             <Button type="primary" onClick={() => newHorario(record)}>Añadir horario</Button>
           ) : (
             <div>{record.horario}</div>
@@ -182,7 +192,7 @@ const App = ({ datos }) => {
       key: 'resultado',
       render: (_, record) => (
         <div>
-          {record.resultado === "" && record.equipo1.jugador2 !== "" && record.equipo2.jugador2 !== "" ? (
+          {record.resultado === "" && record.equipo1.jugador2 !== "" && record.equipo2.jugador2 !== "" && isJugador == false ? (
             <Button type="primary" onClick={() => newResultado(record)}>Añadir resultado</Button>
           ) : (
             <div>{record.resultado}</div>
@@ -306,7 +316,7 @@ const App = ({ datos }) => {
             </Form>
           </div>
         </Modal>
-      )}
+      )} 
     </>
   );
 };

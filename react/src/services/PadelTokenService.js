@@ -42,6 +42,7 @@ export class PadelTokenService {
         await this.padelTokenContract.methods.pagarInscripcion(jugador2, contratoTorneo).send({ from: jugador1, gas: 6721975 });
       } catch (error) {
         console.error('An error occurred:', error);
+        throw error;
       }
     }
   

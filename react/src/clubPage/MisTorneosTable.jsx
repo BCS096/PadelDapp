@@ -21,20 +21,25 @@ const App = ({ torneos, setTorneos }) => {
   const padelDBService = new PadelDBService();
 
   useEffect(() => {
-    if (torneoService && iniciar != "") {
-      torneoService.cerrarInscripciones(account).then(() => {
-        setIniciar(false);
-        setTorneoService(null);
-        padelDBService.updateTorneoStatus(iniciar, {status: 'PLAYING'}).then(() => {
-          padelDBService.getTorneosByOwner(account).then((torneos) => {
-            torneos.forEach((torneo) => {
-              torneo.key = torneo.address;
-            });
-            setTorneos(torneos);
+    const cerrarInscripcionesYActualizar = async () => {
+      try {
+        if (torneoService && iniciar !== "") {
+          await torneoService.cerrarInscripciones(account);
+          setIniciar(false);
+          setTorneoService(null);
+          await padelDBService.updateTorneoStatus(iniciar, {status: 'PLAYING'});
+          const torneos = await padelDBService.getTorneosByOwner(account);
+          torneos.forEach((torneo) => {
+            torneo.key = torneo.address;
           });
-        });
-      });
-    }
+          setTorneos(torneos);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+  
+    cerrarInscripcionesYActualizar();
   }, [torneoService, iniciar, account]);
  
   const handleSearch = (selectedKeys, confirm, dataIndex) => {

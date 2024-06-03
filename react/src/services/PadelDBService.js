@@ -206,7 +206,6 @@ export class PadelDBService {
       for (let i = 0; i < equipos.length; i++) {
         const jugador1 = await this.getUsuario(equipos[i].jugador1);
         const jugador2 = await this.getUsuario(equipos[i].jugador2);
-        console.log('e', equipos)
         names.set(equipos[i].id, {
           jugador1: jugador1.nombre,
           jugador1Id: equipos[i].jugador1,
@@ -241,7 +240,6 @@ export class PadelDBService {
 
   async getJugadoresByAddress(addresses) {
     try {
-      console.log('addresses', addresses);
       const res = await axios.post(`${this.backendUrl}/api/usuarios`, addresses);
       return res.data;
     } catch (error) {
@@ -258,6 +256,17 @@ export class PadelDBService {
       console.error('Error al obtener los jugadores:', error);
       throw error;
     }
+  }
+
+  async getOwner(addressTorneo) {
+    try {
+      const response = await axios.get(`${this.backendUrl}/api/torneo/${addressTorneo}/owner`);
+      return response.data;
+    } catch (error) {
+      console.error('Error al obtener el propietario:', error);
+      throw error;
+    }
+
   }
 
 }

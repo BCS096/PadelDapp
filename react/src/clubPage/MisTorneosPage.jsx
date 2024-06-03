@@ -5,9 +5,9 @@ import { useWeb3 } from '../Web3Provider';
 import { Divider } from 'antd';
 import { Routes, Route } from 'react-router-dom';
 import './MisTorneosPage.css';
-import PartidosPage from './PartidosPage';
-import CuadroPage from './CuadroPage';
-import EquiposPage from './EquiposPage';
+import PartidosPage from '../common/PartidosPage';
+import CuadroPage from '../common/CuadroPage';
+import EquiposPage from '../common/EquiposPage';
 
 const MisTorneosPage = () => {
 
