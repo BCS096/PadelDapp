@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import Web3 from 'web3';
+import { useNavigate } from 'react-router-dom';
 
 const Web3Context = createContext();
 
@@ -8,6 +9,7 @@ export const useWeb3 = () => useContext(Web3Context);
 export const Web3Provider = ({ children }) => {
     const [web3, setWeb3] = useState(null);
     const [account, setAccount] = useState("");
+    const navigate = useNavigate();
 
     useEffect(() => {
         const savedAccount = localStorage.getItem('account');
@@ -15,6 +17,24 @@ export const Web3Provider = ({ children }) => {
             const web3Instance = new Web3(window.ethereum);
             setWeb3(web3Instance);
             setAccount(savedAccount);
+
+            window.ethereum.on('accountsChanged', (accounts) => {
+                const web3Instance = new Web3(window.ethereum);
+                setWeb3(web3Instance);
+                if (accounts[0]) {
+                    setAccount(accounts[0]);
+                    localStorage.setItem('account', accounts[0]);
+                    console.log("Account changed to: " + accounts[0]);
+                    navigate('/home');
+                } else {
+                    console.log("No account available");
+                    setWeb3(null);
+                    setAccount("");
+                    localStorage.removeItem('account');
+                    navigate('/home');
+                }
+            });
+
         }
     }, []);
 
@@ -32,6 +52,7 @@ export const Web3Provider = ({ children }) => {
         } else {
             console.error('MetaMask not found');
         }
+
         window.ethereum.on('accountsChanged', (accounts) => {
             const web3Instance = new Web3(window.ethereum);
             setWeb3(web3Instance);
@@ -39,11 +60,13 @@ export const Web3Provider = ({ children }) => {
                 setAccount(accounts[0]);
                 localStorage.setItem('account', accounts[0]);
                 console.log("Account changed to: " + accounts[0]);
+                navigate('/home');
             } else {
                 console.log("No account available");
                 setWeb3(null);
                 setAccount("");
                 localStorage.removeItem('account');
+                navigate('/home');
             }
         });
     };

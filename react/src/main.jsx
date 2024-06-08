@@ -9,15 +9,17 @@ import MainPlayerPage from './playerPage/MainPlayerPage.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <Web3Provider>
+    
       <Router>
+      <Web3Provider>
         <Routes>
           <Route path="/home" element={<App />} />
           <Route path="/club/*" element={<MainClubPage />} />
           <Route path="/jugador/*" element={<MainPlayerPage />} />
           <Route path="*" element={<Navigate to="/home" />} />
         </Routes>
+        </Web3Provider>
       </Router>
-    </Web3Provider>
+    
   </React.StrictMode>
 );
