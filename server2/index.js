@@ -6,9 +6,26 @@ const pkg = require('@sendgrid/mail');
 const app = express();
 const port = 3001;
 
+const corsOptions = {
+    origin: 'http://localhost:5173',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    optionsSuccessStatus: 204
+  };
+
 // Configurar middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
+
+app.use((req, res, next) => {
+    const allowedOrigin = 'http://localhost:5173';
+    const origin = req.headers.origin;
+    
+    if (origin !== allowedOrigin) {
+        return res.status(403).json({ message: 'Forbidden' });
+    }
+    next();
+});
 
 app.post('/email/sendMail', (req, res) => {
     const { email, name, horario } = req.body;

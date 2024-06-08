@@ -13,6 +13,7 @@ import PadelTokenJSON from '../assets/contracts/PadelToken.json'
 import SalutationPage from './SalutationPage';
 
 
+
 const { Sider, Content } = Layout;
 
 function getItem(label, key, icon, to) {
@@ -29,7 +30,7 @@ const items = [
   getItem('Datos de contacto', '3', <GiTennisBall />, 'infoPersonal'),
 ];
 
-const PDT_CONTRACT = "0x9cCE28475A3417882D95dba489Dd8C58F0E86d47";
+const PDT_CONTRACT = PadelTokenJSON.address;
 
 const MainClubPage = () => {
   

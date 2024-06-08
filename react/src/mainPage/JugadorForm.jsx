@@ -22,7 +22,7 @@ const tailLayout = {
     },
 };
 
-const PDT_CONTRACT = "0x9cCE28475A3417882D95dba489Dd8C58F0E86d47";
+const PDT_CONTRACT = PadelTokenJSON.address;
 
 const JugadorForm = () => {
 

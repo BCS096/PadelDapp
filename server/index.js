@@ -8,9 +8,29 @@ const path = require('path');
 
 const app = express();
 
-app.use(cors());
+const corsOptions = {
+    origin: 'http://localhost:5173',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    optionsSuccessStatus: 204
+  };
 
+// Configurar middleware
+app.use(cors(corsOptions));
 app.use(express.json());
+
+// Servir la carpeta de imágenes de manera pública
+app.use('/images', express.static(path.join(__dirname, 'images')));
+
+app.use((req, res, next) => {
+    const allowedOrigin = 'http://localhost:5173';
+    const origin = req.headers.origin;
+    
+    if (origin !== allowedOrigin) {
+        return res.status(403).json({ message: 'Forbidden' });
+    }
+    next();
+});
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 

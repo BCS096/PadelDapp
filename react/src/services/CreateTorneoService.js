@@ -1,8 +1,9 @@
 import TorneoJSON from '../assets/contracts/Torneo.json';
+import PadelTokenJSON from '../assets/contracts/PadelToken.json';
 
 export class CreateTorneoService {
     
-    static TOKEN_CONTRACT = "0x9cCE28475A3417882D95dba489Dd8C58F0E86d47";
+    static TOKEN_CONTRACT = PadelTokenJSON.address;
 
     constructor(web3) {
         this.web3 = web3;
