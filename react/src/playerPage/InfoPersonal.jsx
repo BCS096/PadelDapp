@@ -4,9 +4,10 @@ import { useWeb3 } from '../Web3Provider';
 import { PadelDBService } from '../services/PadelDBService';
 import './InfoPersonal.css';
 
+
 const { Option } = Select;
 
-function MainPlayerPage() {
+function MainPlayerPage({setName}) {
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
     const [modal, setModal] = useState({
@@ -16,13 +17,11 @@ function MainPlayerPage() {
         type: ''
     });
     const { account } = useWeb3();
-    const [player, setPlayer] = useState({});
     const padelDBService = new PadelDBService();
 
     useEffect(() => {
         if (account) {
             padelDBService.getUsuario(account).then((res) => {
-                setPlayer(res);
                 form.setFieldsValue({
                     nombre: res.nombre,
                     telefono: res.telefono,
@@ -49,7 +48,7 @@ function MainPlayerPage() {
                 description: 'Los datos del club han sido actualizados correctamente',
                 type: 'success'
             });
-            setPlayer(values);
+            setName(values.nombre);
         } catch (error) {
             setModal({
                 visible: true,

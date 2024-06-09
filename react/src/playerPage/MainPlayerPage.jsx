@@ -94,7 +94,7 @@ const MainPlayerPage = () => {
           <Routes>
             <Route path="torneos" element={<TorneosDisponibles />} />
             <Route path="mis-torneos/*" element={<MisTorneos />} />
-            <Route path="info-personal" element={<InfoPersonal  />} />
+            <Route path="info-personal" element={<InfoPersonal setName={setPlayerName}  />} />
             <Route path="venta-pdt" element={<VentaTokens />} />
             <Route path="*" element={<TorneosDisponibles />} />
           </Routes>

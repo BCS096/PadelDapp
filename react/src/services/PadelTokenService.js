@@ -21,11 +21,14 @@ export class PadelTokenService {
         if (error.message.includes('La cantidad de ether enviada no es correcta')) {
           // Handle the specific error here
           console.error('The amount of ether sent is not correct.');
+          throw error;
         }
         if (error.message.includes('El vendedor no admite la venta de tantos tokens')) {
           // Handle the specific error here
           console.error('The seller does not allow the sale of so many tokens.');
+          throw error;
         }
+        throw error;
       }
     }
   
