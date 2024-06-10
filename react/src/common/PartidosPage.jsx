@@ -28,11 +28,11 @@ function calcularRondas(equipos) {
 
 function nombreRonda(numRonda) {
   if (numRonda === 5) {
-    return "Dieciseisavo";
+    return "Dieciseisavos";
   } else if (numRonda === 3) {
-    return "Octavo";
+    return "Octavos";
   } else if (numRonda === 2) {
-    return "Cuarto";
+    return "Cuartos";
   } else if (numRonda === 1) {
     return "Semifinal";
   } else if (numRonda === 0) {
