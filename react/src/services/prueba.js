@@ -987,4 +987,8 @@ const pdt = new PadelTokenService(contractPDT);
 //contractTorneo.methods.addEquipo('0x248b513a9945391283112cE6dE12F89482B8a2Ff', '0xc22678A618a3ba3b3E996025C32FC24A6EFA3800').send({from: '0x40E4b12F4EC01D96148c0beC096bFC649d93DD88', gas: 6721975});
 
 
-pdt.getBalanceOf('0x7783E542F5919087DF717351BA0e258E64d95649').then(console.log);
+web3.eth.getBalance("0x0816C3E4371182870e248eEF1A02D0A703D5352A").then
+    (result => console.log("vendedor: ", result));
+
+    web3.eth.getBalance("0xe2DD975F204053bA49f83773a85C793E809Cc9b2").then
+    (result => console.log("comprador: ",result));
