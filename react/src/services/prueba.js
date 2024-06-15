@@ -546,7 +546,7 @@ const contratoTorneoABI = [
   }
 ];
 
-const contratoPDTAddress = '0x9cCE28475A3417882D95dba489Dd8C58F0E86d47';
+const contratoPDTAddress = '0x635daF522287335E42d4789706C1A609cE578678';
 
 const contratoPDTABI = [
   {
@@ -987,8 +987,19 @@ const pdt = new PadelTokenService(contractPDT);
 //contractTorneo.methods.addEquipo('0x248b513a9945391283112cE6dE12F89482B8a2Ff', '0xc22678A618a3ba3b3E996025C32FC24A6EFA3800').send({from: '0x40E4b12F4EC01D96148c0beC096bFC649d93DD88', gas: 6721975});
 
 
-web3.eth.getBalance("0x0816C3E4371182870e248eEF1A02D0A703D5352A").then
-    (result => console.log("vendedor: ", result));
+web3.eth.getBalance("0x635daF522287335E42d4789706C1A609cE578678").then
+    (result => console.log("creador token: ", result));
 
-    web3.eth.getBalance("0xe2DD975F204053bA49f83773a85C793E809Cc9b2").then
-    (result => console.log("comprador: ",result));
+    web3.eth.getBalance("0x3acb37B9E4bC57F4F216F6B4f790a0D118f10A69").then
+    (result => console.log("vendedor: ",result));
+
+    //creador token:  99989180200126127072
+    //vendedor:  99980754343198296833
+
+    //creador token:  99989820200126127072
+    //vendedor:  99986514343198296833
+
+
+    // diferencia 
+    //creador token:  640000000000000
+    //vendedor:  5760000000000000

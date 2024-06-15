@@ -54,6 +54,7 @@ export class PadelTokenService {
         await this.padelTokenContract.methods.recompensaRegistro().send({ from: jugador });
       } catch (error) {
         console.error('An error occurred:', error);
+        throw error;
       }
     }
   
@@ -66,6 +67,7 @@ export class PadelTokenService {
         await this.padelTokenContract.methods.setAllowSell(cantidad).send({ from: usuario });
       } catch (error) {
         console.error('An error occurred:', error);
+        throw error;
       }
     }
   

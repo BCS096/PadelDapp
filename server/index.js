@@ -1,4 +1,3 @@
-// index.js
 const express = require('express');
 const mysql = require('mysql2');
 const fs = require('fs');
@@ -15,11 +14,9 @@ const corsOptions = {
     optionsSuccessStatus: 204
   };
 
-// Configurar middleware
 app.use(cors(corsOptions));
 app.use(express.json());
 
-// Servir la carpeta de imágenes de manera pública
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 app.use((req, res, next) => {
