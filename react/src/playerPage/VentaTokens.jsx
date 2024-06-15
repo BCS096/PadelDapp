@@ -1,6 +1,7 @@
 import React from 'react';
 import { Divider } from 'antd';
 import VentaTokensCLubs from './VentaTokenClubs';
+import VentaTokenCreator from './VentaTokenCreator';
 
 function MainPlayerPage() {
     return (
@@ -11,9 +12,15 @@ function MainPlayerPage() {
                     <h4>1 PDT = 0,00064 ETH</h4>
                 </div>
                 <Divider type="vertical" className="vertical-divider-cuadro" />
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <div className='personal-player-box-div'>
                     <h1 className="title">Clubes</h1>
                     <VentaTokensCLubs />
+                </div>
+                <div className='personal-player-box-div'>
+                    <h1 className="title">Creador PDT</h1>
+                    <VentaTokenCreator />
+                </div>
                 </div>
             </div>
         </>

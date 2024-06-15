@@ -61,7 +61,7 @@ export class PadelTokenService {
   
     async setAllowSell(usuario, cantidad) { //club
       try {
-        await this.padelTokenContract.methods.setAllowSell(cantidad).send({ from: usuario });
+        await this.padelTokenContract.methods.setAllowSell(cantidad).send({ from: usuario, gas: 6721975  });
       } catch (error) {
         console.error('An error occurred:', error);
       }
@@ -546,7 +546,7 @@ const contratoTorneoABI = [
   }
 ];
 
-const contratoPDTAddress = '0x635daF522287335E42d4789706C1A609cE578678';
+const contratoPDTAddress = '0x40a72bD1935cC72847a69Bc3d8a01F44F07F1aeB';
 
 const contratoPDTABI = [
   {
@@ -987,11 +987,15 @@ const pdt = new PadelTokenService(contractPDT);
 //contractTorneo.methods.addEquipo('0x248b513a9945391283112cE6dE12F89482B8a2Ff', '0xc22678A618a3ba3b3E996025C32FC24A6EFA3800').send({from: '0x40E4b12F4EC01D96148c0beC096bFC649d93DD88', gas: 6721975});
 
 
-web3.eth.getBalance("0x635daF522287335E42d4789706C1A609cE578678").then
+pdt.setAllowSell('0x635daF522287335E42d4789706C1A609cE578678', 5000).then(console.log("done"));
+pdt.getBalanceOf('0x635daF522287335E42d4789706C1A609cE578678').then(result => console.log("creador token: ", result));
+pdt.getAllowSell('0x635daF522287335E42d4789706C1A609cE578678').then(result => console.log("allow: ", result));
+
+/*web3.eth.getBalance("0x635daF522287335E42d4789706C1A609cE578678").then
     (result => console.log("creador token: ", result));
 
     web3.eth.getBalance("0x3acb37B9E4bC57F4F216F6B4f790a0D118f10A69").then
-    (result => console.log("vendedor: ",result));
+    (result => console.log("vendedor: ",result));*/
 
     //creador token:  99989180200126127072
     //vendedor:  99980754343198296833
