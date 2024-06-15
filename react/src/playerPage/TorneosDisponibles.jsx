@@ -3,6 +3,7 @@ import TorneosTable from './TorneosTable';
 import { PadelDBService } from '../services/PadelDBService';
 import { useWeb3 } from '../Web3Provider';
 import { Divider } from 'antd';
+import './TorneosDisponibles.css';
 
 const MisTorneosPage = () => {
 
@@ -36,6 +37,7 @@ const MisTorneosPage = () => {
             >
                 <div className="mis-torneos-title">
                     <h1>Torneos disponibles</h1>
+                    <h4>Cada inscripción a un torneo cuesta 5 PDT por equipo</h4>
                 </div>
                 <Divider className='divider' />
                 <div className='table-div'>

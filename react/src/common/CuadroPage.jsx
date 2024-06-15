@@ -37,7 +37,7 @@ function setWidth(rondas) {
   if (rondas === 5) {
     return 1000;
   } else if (rondas === 4) {
-    return 850;
+    return 875;
   } else if (rondas === 3) {
     return 650;
   } else if (rondas === 2) {
@@ -53,7 +53,7 @@ function setHeight(rondas) {
   if (rondas === 5) {
     return 800;
   } else if (rondas === 4) {
-    return 650;
+    return 900;
   }
   else if (rondas === 3) {
     return 450;
@@ -161,7 +161,6 @@ const TorneoCanvas = () => {
         <h1 className="title">Cuadro de {nombreTorneo}</h1>
       </div>
       <Divider type="vertical" className="vertical-divider-cuadro" />
-      <div id="scrollDiv" className='cuadro-div' style={{ margin: '8%' }}>
         <canvas
           ref={canvasRef}
           id="torneoCanvas"
@@ -169,7 +168,6 @@ const TorneoCanvas = () => {
           height={setHeight(calcularRondas(equipos.length))}
         >
         </canvas>
-      </div>
     </>
   );
 }
