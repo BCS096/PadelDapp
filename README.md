@@ -1,8 +1,7 @@
-# React + Vite
+# Padel Dapp
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Trabajo de final de grado de ingeniría informática en la UIB. 
 
-Currently, two official plugins are available:
+Para ejecutar el proyecto se deberá tener una base de datos Mysql en local con el modelo conceptual que aparece en la documentación y posteriormente configurarlo en el servidor.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Además se necesitará una blockchain en local como Ganache arrancada en el puerto 7545 y desplegar el contrato de PadelToken. Una vez que se tiene la dirección del contrato desplegado se debe introducir en el atributo de 'address' del archivo PadelToken.json del servidor de React.
